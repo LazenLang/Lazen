@@ -77,7 +77,17 @@ def tokenizer_optimize(token_list):
                     print(traceback.print_exc())
                     x += 1
             elif i2 == "+":
-
+                try:
+                    if counter > 0:
+                        get_before = i[counter - 1]
+                        if not get_before in info.tokenizing_symbols:
+                            line_result.append(i2)
+                    #    else:
+                            # counter += 1
+                            # continue
+                        # print("hey : " + +5)
+                except:
+                    x += 1
             else:
                 line_result.append(i2)
             counter += 1
