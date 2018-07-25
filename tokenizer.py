@@ -89,7 +89,7 @@ def tokenize_line(line, line_counter, return_raw = False):
 
         last_symb = i10
 
-    #####################################################
+    ##############################################################
 
     if line_result_copy_1[len(line_result_copy_1) - 2] == ";": # Detects and remove an eventually existing semicolon at the end of the line.
         line_result_copy_1.pop(len(line_result_copy_1) - 2) #
