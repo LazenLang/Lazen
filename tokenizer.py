@@ -103,3 +103,4 @@ def go(code):
         line_counter += 1
         result.append(_tokenizeLn);
     return result
+
