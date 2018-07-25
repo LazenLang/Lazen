@@ -13,7 +13,7 @@ def go(code):
         elif verify_closings[1] == "too_much_closing_parn":
             errors.pup_error(errors.get_error("0007", str(verify_closings[2] + 1)))
     else:
-        for i in tokenizer.go(code):
+        for i in optimisations.tokenizer_optimize(tokenizer.go(code)):
             for i2 in i:
                 print(i2)
             print("-----------")
