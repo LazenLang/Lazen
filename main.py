@@ -2,13 +2,13 @@ import sys
 import info
 import errors
 import start_modules
+import text_utilities
 
-counter = 0
 file_to_interpret = ""
 
-for i in sys.argv:
-    if i.startswith("--"):
-        raw_arg = i[2 : len(i)]
+for counter, x in enumerate(sys.argv):
+    if x.startswith("--"):
+        raw_arg = x[2 : len(x)]
         if raw_arg.lower() == "file":
             try:
                 err_test = sys.argv[counter + 1]
@@ -16,9 +16,9 @@ for i in sys.argv:
                 errors.pup_error(errors.get_error("0001"))
 
             file_name = " "
-            for i2 in range(counter + 1, len(sys.argv)):
-                if not sys.argv[i2].startswith("--"):
-                    file_name += sys.argv[i2] + " "
+            for x2 in range(counter + 1, len(sys.argv)):
+                if not sys.argv[x2].startswith("--"):
+                    file_name += sys.argv[x2] + " "
                 else:
                     break
 
@@ -42,4 +42,3 @@ for i in sys.argv:
         elif raw_arg.lower() == "version":
             print("Lazen Interpreter (" + info.version + ")")
             quit()
-    counter += 1
