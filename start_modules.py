@@ -15,8 +15,10 @@ def go(code):
             errors.pup_error(errors.get_error("0007", str(verify_closings[2] + 1)))
     else:
         for i in tokenizer.go(code): #optimisations.tokenizer_optimize(tokenizer.go(code)):
-            i2 = parsing.go(i, True)
-        #
+            if not len(i) > 0:
+                continue
+            i2 = parsing.go(i)
+
             print("we have to parse ", i)
             print(i2)
             print("-----------")
