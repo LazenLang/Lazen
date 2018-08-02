@@ -27,12 +27,23 @@ def erase_btwn_parn(input): # This function will erase the text between every pa
             result += " "
     return result
 
+def repeat_char(char, times):
+    result = ""
+    for i in range(0, times):
+        result += char
+    return result
+
 def remove_parn(input): # 'input' must be a string, this function should remove the parenthesis at the beginning and the end of the line.
     beg_sp_amount = 0
     # (5 + 5) | (5 + 5) * (6 + 1)
 
-    if not input.strip().startswith("(") and not input.strip().endswith(")"):
-        return input
+    if not count_char(input, "(") == count_char(input, ")"):
+        if count_char(input, "(") > count_char(input, ")"):
+            substract = count_char(input, "(") - count_char(input, ")")
+            input += repeat_char(")", substract)
+        else:
+            substract = count_char(input, ")") - count_char(input, "(")
+            input = repeat_char("(", substract) + input
 
     if erase_btwn_parn(input).strip() == "":
         print("input: ", input, " / choice: 1")
@@ -46,6 +57,10 @@ def remove_parn(input): # 'input' must be a string, this function should remove 
     else:
         print("input: ", input, " / choice: 2")
     return input
+
+def reverse_str(str):
+    return list_to_str(reversed(str_to_list(str)))
+
 def count_char(input, char): # This function returns the amount of the specified character occurences in the input.
                              # 'input' can be of types String or List.
     occurences = 0

@@ -15,6 +15,8 @@ def tokenize_line(line, line_counter, return_raw = False):
             line_result_raw.append(i2)
             adder = counter + 1
 
+    line_result_raw.pop()
+
     if return_raw:
         return line_result_raw
     opened_str = False
@@ -65,18 +67,19 @@ def tokenize_line(line, line_counter, return_raw = False):
         if not i8.strip() == "":
             line_result_copy.append(i8.strip())
 
-    for i9 in line_result_copy:
-        if i9 == "/":
-            x = 0
-            try:
-                char_after = line_result_copy[counter_1 + 1]
-                if char_after == "/":
-                    break
-            except:
-                x += 1
-        else:
-            line_result_copy_1.append(i9)
-        counter_1 += 1
+    # Removes end-line comments #
+
+    for counter, i9 in enumerate(line_result_copy):
+        print("i9: ", i9)
+        line_result_copy_1.append(i9)
+        try:
+            get_after = line_result_copy[counter + 1]
+            if i9 == "/" and get_after == "/":
+                break
+        except:
+            pass
+
+    ###################################
 
     # Symbols-Repetition Errors Verification (fast) #
 
@@ -88,6 +91,21 @@ def tokenize_line(line, line_counter, return_raw = False):
             errors.pup_error(errors.get_error("0003", str(line_counter + 2), i10, str(counter)))
 
         last_symb = i10
+
+    # Now we're going to prevent some other symbols to repeat more than ... times (can exceed 2 times for verification)
+
+    """
+    Maximal repetitions amount for each operator
+
+    + : 4 times
+    - : 4 times
+    * : 1 time
+    ^ : 1 time
+    / : 1 time
+
+    """
+
+    symb_black2 = ["+", "-"]
 
     #####################################################
 

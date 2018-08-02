@@ -66,7 +66,9 @@ def parse_math_expr(expr, operator, operatorIndexes):
 				operatorIndexes.append(len(token_list))
 
 			result_to_put = text_utilities.list_to_str(token_list[adder: x])
-			if "+" in result_to_put or "-" in result_to_put or "*" in result_to_put or "/" in result_to_put or "^" in result_to_put or "%" in result_to_put:
+			if "+" in result_to_put or "-" in result_to_put or "*" in result_to_put or \
+			"/" in result_to_put or "^" in result_to_put or "%" in result_to_put or \
+			"(" in result_to_put or ")" in result_to_put:
 				result_to_put = go(text_utilities.str_to_list(result_to_put))
 				multi_str = True
 			if not multi_str:

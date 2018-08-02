@@ -2,54 +2,68 @@ import info
 import traceback
 import text_utilities
 import tokenizer
-def tokenizer_optimize(token_list):
-    # Basic Tokens Optimisations, Example : print(5 - -5) -> print(5-(0-5)) -> print(5+5)
-    result = token_list
-    return result
-def optimize_plus_operator(i):
-    line_result = []
+def tokenizer_optimize(token_list, phase = 1):
+    # Basic Tokens Optimisations, Examples -
+    # +1 -> 1 | +(1+1) -> (1+1)
+    # -1 -> (0-1) | -(5+5) -> (0-(5+5))
+    # 1++ -> (1+1) | (1+5)++ -> ((1+5)+1)
+    result = []
     counter = 0
-    x = 0
-    for i2_raw in i:
+    for i in token_list:
+        x = ""
         try:
-            i2 = i[counter]
+            x = token_list[counter]
         except:
             break
-        # Here we will optimize :
-        """
-        var
-        +
-        =
-        12
-        """
-        # To :
-        """
-        var
-        +=
-        12
-        """
-        # And : print(5++ - 5) -> print((5+1) - 5)
+        #get_before = " "
+        get_after = " "
+        get_after_db = " "
+        try:
+            #get_before = token_list[counter - 1]
+            get_after = token_list[counter + 1]
+            get_after_db = token_list[counter + 2]
+        except:
+            pass
 
+        # 40:+:(:5:+:+:)
+        if (get_after == "+" and get_after_db == "+" and (not x in info.tokenizing_symbols or x == ")")) or \
+        (get_after == "-" and get_after_db == "-" and (not x in info.tokenizing_symbols or x == ")")):
+            if x == ")":
+                get_btwn_parn, opening_parn = "", 0 # get_btwn_parn is including parenthesis themselves
 
-        if i2 == "+":
-            if i[counter + 1]:
-                if i[counter + 1] == "+":
-                    if not i[counter + 2]:
-                        line_result.append("++")
-                        counter += 1
-                    elif i[counter + 2]:
-                        if i[counter + 2] in info.tokenizing_symbols:
-                            line_result.append("++")
-                            counter += 1
-                        else:
-                            line_result.append("+")
-                            line_result.append("+")
-                            counter += 1
-                else:
-                    line_result.append("+")
+                for i2 in reversed(range(0, counter + 1)):
+                    x2 = token_list[i2]
+                    get_btwn_parn += x2
+                    if x2 == ")":
+                        opening_parn += 1
+                    elif x2 == "(":
+                        opening_parn -= 1
+
+                    if opening_parn == 0:
+                        break
+
+                get_btwn_parn = text_utilities.reverse_str(get_btwn_parn)
+                result = result[0 : counter - (len(get_btwn_parn)-1)]
+
+                result.append("(")
+                result.append(get_btwn_parn)
+                result.append(get_after)
+                result.append("1")
+                result.append(")")
+
+                counter += 2
             else:
-                line_result.append("+")
+                result.append("(")
+                result.append(x)
+                result.append(get_after)
+                result.append("1")
+                result.append(")")
+                counter += 2
         else:
-            line_result.append(i2)
+            result.append(x)
         counter += 1
-    return line_result
+    if phase <= 2:
+        return tokenizer_optimize(result, phase + 1)
+    else:
+        print("res len: ", len(result))
+        return result
