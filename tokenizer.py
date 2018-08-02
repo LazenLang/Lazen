@@ -59,8 +59,6 @@ def tokenize_line(line, line_counter, return_raw = False):
     line_result_final = []
     counter_1 = 0
     x = 0
-    line_result.append("/")
-    line_result.append("/")
     precedent_i8 = ""
 
     for i8 in line_result:
@@ -70,23 +68,33 @@ def tokenize_line(line, line_counter, return_raw = False):
     # Removes end-line comments #
 
     for counter, i9 in enumerate(line_result_copy):
-        print("i9: ", i9)
+        if i9 == "#":
+            break
         line_result_copy_1.append(i9)
-        try:
-            get_after = line_result_copy[counter + 1]
-            if i9 == "/" and get_after == "/":
-                break
-        except:
-            pass
 
     ###################################
 
-    # Symbols-Repetition Errors Verification (fast) #
+    # Invalid Symbols Verification (fast) #
+    symb_white, count_col = info.tokenizing_symbols, 0
+
+    for cc in line_result_copy_1:
+        count_col += len(cc)
+        if not text_utilities.check_if_type(cc, "char") and not text_utilities.check_if_type(cc, "str") and not text_utilities.check_if_type(cc, "num") \
+        and not text_utilities.check_if_type(cc, "letter"):
+            for counter, browse_in in enumerate(cc):
+                if not browse_in in symb_white and not text_utilities.check_if_type(browse_in, "num") \
+                and not text_utilities.check_if_type(cc, "letter"):
+                    column = count_col
+                    if not counter == len(cc):
+                        column == count_col - (len(cc) - counter)
+                    errors.pup_error(errors.get_error("0008", browse_in, str(line_counter + 2), str(column - 2)))
+
+    # Symbols-Repetition Verification (fast) #
 
     last_symb = ""
-    symb_black = [";", ",", ".", "!", "{", "}"] # Symbols to prevent from repeating in the code
+    symb_black = [";", "&", "<", ">", ".", "!", "{", "}"] # Symbols to prevent from repeating in the code
 
-    for i10 in line_result_copy_1[0 : len(line_result_copy_1) - 1]:
+    for i10 in line_result_copy_1:
         if last_symb == i10 and i10 in symb_black:
             errors.pup_error(errors.get_error("0003", str(line_counter + 2), i10, str(counter)))
 
@@ -102,16 +110,19 @@ def tokenize_line(line, line_counter, return_raw = False):
     * : 1 time
     ^ : 1 time
     / : 1 time
+    % : 1 time
 
     """
 
     symb_black2 = ["+", "-"]
 
     #####################################################
-
-    if line_result_copy_1[len(line_result_copy_1) - 2] == ";": # Detects and remove an eventually existing semicolon at the end of the line.
-        line_result_copy_1.pop(len(line_result_copy_1) - 2) #
-    return line_result_copy_1[0 : len(line_result_copy_1) - 1]
+    try:
+        if line_result_copy_1[len(line_result_copy_1) - 1] == ";": # Detects and remove an eventually existing semicolon at the end of the line.
+            line_result_copy_1.pop(len(line_result_copy_1) - 1) #
+    except:
+        pass
+    return line_result_copy_1
 
 def go(code):
     result = []

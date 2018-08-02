@@ -65,5 +65,4 @@ def tokenizer_optimize(token_list, phase = 1):
     if phase <= 2:
         return tokenizer_optimize(result, phase + 1)
     else:
-        print("res len: ", len(result))
         return result

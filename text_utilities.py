@@ -33,6 +33,35 @@ def repeat_char(char, times):
         result += char
     return result
 
+def check_if_type(input, type = "str"): # This function will check if 'input' is a Lazen string, char, numeric or letter.
+    if type == "str":
+        if input.strip()[0] == "\"" and input.strip()[len(input.strip())] == "\"":
+            return True
+    elif type == "char":
+        if input.strip()[0] == "\'" and input.strip()[len(input.strip())] == "\'" and len(input.strip()) == 3:
+            return True
+    elif type == "num":
+        if is_int(input.strip()):
+            return True
+    elif type == "letter":
+        if is_letter(input.strip()):
+            return True
+    return False
+
+def is_int(input):
+    num_list = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    for x in input:
+        if not x in num_list:
+            return False
+    return True
+
+def is_letter(input):
+    letter_list = str_to_list("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    if input in letter_list:
+        return True
+    else:
+        return False
+
 def remove_parn(input): # 'input' must be a string, this function should remove the parenthesis at the beginning and the end of the line.
     beg_sp_amount = 0
     # (5 + 5) | (5 + 5) * (6 + 1)
@@ -46,7 +75,6 @@ def remove_parn(input): # 'input' must be a string, this function should remove 
             input = repeat_char("(", substract) + input
 
     if erase_btwn_parn(input).strip() == "":
-        print("input: ", input, " / choice: 1")
         for x in input.strip():
             if x == "(":
                 beg_sp_amount += 1
@@ -54,8 +82,6 @@ def remove_parn(input): # 'input' must be a string, this function should remove 
                 break
         for i in range(0, beg_sp_amount):
             input = input[1 : len(input) - 1]
-    else:
-        print("input: ", input, " / choice: 2")
     return input
 
 def reverse_str(str):
