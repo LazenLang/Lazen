@@ -15,6 +15,41 @@ def tokenizer_optimize(token_list, phase = 1):
             x = token_list[counter]
         except:
             break
+
+        # print("x: ", x)
+        if x == "+":
+            get_before = token_list[counter - 1]
+            if get_before in info.tokenizing_symbols:
+                counter += 1
+                continue
+        elif x == "-":
+            # -5
+            # -(5+5)
+            # 5-5
+            get_before = " "
+            # for cnter, x9 in enumerate(token_list):
+            #    print("x9: ", x9, " / ", cnter)
+
+            if counter - 1 >= 0:
+                get_before = token_list[counter - 1]
+                if get_before in info.tokenizing_symbols and not get_before == ")":
+                    if len(token_list) >= counter + 1:
+                        get_after = token_list[counter + 1]
+                        print("get_after: ", get_after)
+                        if get_after == "(":
+                            print("")
+                        else:
+                            result.append("(")
+                            result.append("0")
+                            result.append("-")
+                            result.append(get_after)
+                            result.append(")")
+                            print("after it should be ", token_list[counter + 1], " and then ", token_list[counter + 2])
+                            print("but now it's ", token_list[counter])
+                            counter += 2
+                            continue
+            elif counter - 1 == -1:
+                print("")
         #get_before = " "
         get_after = " "
         get_after_db = " "
@@ -30,17 +65,6 @@ def tokenizer_optimize(token_list, phase = 1):
         (get_after == "-" and get_after_db == "-" and (not x in info.tokenizing_symbols or x == ")")):
             if x == ")":
                 get_btwn_parn, opening_parn = "", 0 # get_btwn_parn is including parenthesis themselves
-
-                for i2 in reversed(range(0, counter + 1)):
-                    x2 = token_list[i2]
-                    get_btwn_parn += x2
-                    if x2 == ")":
-                        opening_parn += 1
-                    elif x2 == "(":
-                        opening_parn -= 1
-
-                    if opening_parn == 0:
-                        break
 
                 get_btwn_parn = text_utilities.reverse_str(get_btwn_parn)
                 result = result[0 : counter - (len(get_btwn_parn)-1)]

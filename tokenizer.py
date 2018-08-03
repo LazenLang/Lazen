@@ -83,21 +83,20 @@ def tokenize_line(line, line_counter, return_raw = False):
         and not text_utilities.check_if_type(cc, "letter"):
             for counter, browse_in in enumerate(cc):
                 if not browse_in in symb_white and not text_utilities.check_if_type(browse_in, "num") \
-                and not text_utilities.check_if_type(cc, "letter"):
+                and not text_utilities.check_if_type(browse_in, "letter"):
                     column = count_col
                     if not counter == len(cc):
                         column == count_col - (len(cc) - counter)
-                    errors.pup_error(errors.get_error("0008", browse_in, str(line_counter + 2), str(column - 2)))
+                    errors.pup_error(errors.get_error("0008", browse_in, str(line_counter + 2), str(column - 1)))
 
     # Symbols-Repetition Verification (fast) #
 
-    last_symb = ""
-    symb_black = [";", "&", "<", ">", ".", "!", "{", "}"] # Symbols to prevent from repeating in the code
+    ch_counter, last_symb, symb_black = 0, "", [";", "&", "<", ">", "*", "^", "/", "%", ".", "!", "{", "}"] # Symbols to prevent from repeating in the code
 
     for i10 in line_result_copy_1:
         if last_symb == i10 and i10 in symb_black:
-            errors.pup_error(errors.get_error("0003", str(line_counter + 2), i10, str(counter)))
-
+            errors.pup_error(errors.get_error("0003", str(line_counter + 2), i10, str(ch_counter)))
+        ch_counter += len(i10)
         last_symb = i10
 
     # Now we're going to prevent some other symbols to repeat more than ... times (can exceed 2 times for verification)
@@ -107,14 +106,28 @@ def tokenize_line(line, line_counter, return_raw = False):
 
     + : 4 times
     - : 4 times
-    * : 1 time
-    ^ : 1 time
-    / : 1 time
-    % : 1 time
 
     """
 
-    symb_black2 = ["+", "-"]
+    last_four_symb, temp_list, col_cnter = [], [], 0
+
+
+    for x in line_result_copy_1:
+        col_cnter += len(x)
+        if not x in last_four_symb:
+            for x2 in last_four_symb:
+                temp_list.append(x2)
+            last_four_symb.clear()
+        last_four_symb.append(x)
+        if len(last_four_symb) >= 4:
+            symb_olist = last_four_symb[0]
+            if symb_olist == "+" or symb_olist == "-":
+                errors.pup_error(errors.get_error("0009", str(line_counter + 2), symb_olist, str(col_cnter - 3)))
+
+
+                continue
+        temp_list.append(x)
+
 
     #####################################################
     try:

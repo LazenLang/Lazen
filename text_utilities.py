@@ -35,10 +35,10 @@ def repeat_char(char, times):
 
 def check_if_type(input, type = "str"): # This function will check if 'input' is a Lazen string, char, numeric or letter.
     if type == "str":
-        if input.strip()[0] == "\"" and input.strip()[len(input.strip())] == "\"":
+        if input.strip()[0] == "\"" and input.strip()[len(input.strip()) - 1] == "\"":
             return True
     elif type == "char":
-        if input.strip()[0] == "\'" and input.strip()[len(input.strip())] == "\'" and len(input.strip()) == 3:
+        if input.strip()[0] == "\'" and input.strip()[len(input.strip()) - 1] == "\'" and len(input.strip()) == 3:
             return True
     elif type == "num":
         if is_int(input.strip()):
@@ -62,27 +62,38 @@ def is_letter(input):
     else:
         return False
 
-def remove_parn(input): # 'input' must be a string, this function should remove the parenthesis at the beginning and the end of the line.
+def remove_parn(input, return_type = "str"): # 'input' must be a list,
+                                             # this function should remove the parenthesis
+                                             # at the beginning and the end of the line.
     beg_sp_amount = 0
     # (5 + 5) | (5 + 5) * (6 + 1)
-
-    if not count_char(input, "(") == count_char(input, ")"):
-        if count_char(input, "(") > count_char(input, ")"):
-            substract = count_char(input, "(") - count_char(input, ")")
-            input += repeat_char(")", substract)
-        else:
-            substract = count_char(input, ")") - count_char(input, "(")
-            input = repeat_char("(", substract) + input
-
-    if erase_btwn_parn(input).strip() == "":
-        for x in input.strip():
-            if x == "(":
-                beg_sp_amount += 1
+    try:
+        if not count_char(input, "(") == count_char(input, ")"):
+            if count_char(input, "(") > count_char(input, ")"):
+                substract = count_char(input, "(") - count_char(input, ")")
+                for x in repeat_char(")", substract):
+                    input.append(x)
             else:
-                break
-        for i in range(0, beg_sp_amount):
-            input = input[1 : len(input) - 1]
-    return input
+                substract = count_char(input, ")") - count_char(input, "(")
+                for x in repeat_char("(", substract):
+                    input.insert(0, x)
+
+        if erase_btwn_parn(input).strip() == "":
+            for x in input:
+                if x == "(":
+                    beg_sp_amount += 1
+                else:
+                    break
+            for i in range(0, beg_sp_amount):
+                input = input[1 : len(input) - 1]
+    except:
+        pass
+
+    if return_type == "lst":
+        return input # 'input' should be a list,
+                     # so, no need to convert to return it as a list.
+    else:
+        return list_to_str(input) # Here we convert 'input' (list) to String format.
 
 def reverse_str(str):
     return list_to_str(reversed(str_to_list(str)))

@@ -11,14 +11,16 @@ def go(code):
             errors.pup_error(errors.get_error("0004", str(verify_closings[2] + 1)))
         elif verify_closings[1] == "str":
             errors.pup_error(errors.get_error("0005", str(verify_closings[2] + 1)))
-        elif verify_closings[1] == "too_much_opening_parn":
+        elif verify_closings[1] == "tmop":
             errors.pup_error(errors.get_error("0006", str(verify_closings[2] + 1)))
-        elif verify_closings[1] == "too_much_closing_parn":
+        elif verify_closings[1] == "tmcp":
             errors.pup_error(errors.get_error("0007", str(verify_closings[2] + 1)))
     else:
-        for i in tokenizer.go(code): #optimisations.tokenizer_optimize(tokenizer.go(code)):
-            print("we have to optimize ", text_utilities.list_to_str(i))
-            optimize_i = optimisations.tokenizer_optimize(i)
+        print("token_list_str2: ", tokenizer.go(code))
+        for i in tokenizer.go(code):
+            # I will temporary stop optimizing the token list because the tokenizer_optimize function generate errors
+            optimize_i = i # optimisations.tokenizer_optimize(i)
+
             if not len(optimize_i) > 0:
                 continue
             i2 = parsing.go(optimize_i)
