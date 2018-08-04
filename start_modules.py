@@ -16,10 +16,9 @@ def go(code):
         elif verify_closings[1] == "tmcp":
             errors.pup_error(errors.get_error("0007", str(verify_closings[2] + 1)))
     else:
-        print("token_list_str2: ", tokenizer.go(code))
         for i in tokenizer.go(code):
-            # I will temporary stop optimizing the token list because the tokenizer_optimize function generate errors
-            optimize_i = i # optimisations.tokenizer_optimize(i)
+            # Token-list optimizer is temporarily unstable, it can cause errors.
+            optimize_i = optimisations.tokenizer_optimize(i)
 
             if not len(optimize_i) > 0:
                 continue

@@ -22,7 +22,7 @@ def tokenizer_optimize(token_list, phase = 1):
             if get_before in info.tokenizing_symbols:
                 counter += 1
                 continue
-        elif x == "-":
+        """elif x == "-":
             # -5
             # -(5+5)
             # 5-5
@@ -43,13 +43,14 @@ def tokenizer_optimize(token_list, phase = 1):
                             result.append("0")
                             result.append("-")
                             result.append(get_after)
+                get_before = token_list[counter - 1]
                             result.append(")")
                             print("after it should be ", token_list[counter + 1], " and then ", token_list[counter + 2])
                             print("but now it's ", token_list[counter])
                             counter += 2
                             continue
             elif counter - 1 == -1:
-                print("")
+                print("") """
         #get_before = " "
         get_after = " "
         get_after_db = " "
