@@ -1,3 +1,4 @@
+import traceback
 def list_to_str(list):
     result = ""
     for x in list:
@@ -10,10 +11,7 @@ def str_to_list(str):
     return result
 def erase_btwn_parn(input): # This function will erase the text between every parenthesis, including the parenthesis themselves.
                             # 'input' can be of  types String or List.
-    result = ""
-    opnd_parn = False
-
-    input_modificated = []
+    result, opnd_parn, input_modificated = "", 0, []
 
     for x in input:
         for x2 in x:
@@ -21,14 +19,14 @@ def erase_btwn_parn(input): # This function will erase the text between every pa
 
     for x in input_modificated:
         if x == "(":
-            opnd_parn = True
+            opnd_parn += 1
             result += " "
             continue
         elif x == ")":
-            opnd_parn = False
+            opnd_parn -= 1
             result += " "
             continue
-        if not opnd_parn:
+        if not opnd_parn > 0:
             result += x
         else:
             result += " "
@@ -85,26 +83,29 @@ def remove_parn(input, return_type = "str"): # 'input' must be a list,
                 for x in repeat_char("(", substract):
                     input.insert(0, x)
 
-        if erase_btwn_parn(input).strip() == "":
-            for x in input:
-                if x == "(":
-                    beg_sp_amount += 1
-                else:
-                    break
-            for i in range(0, beg_sp_amount):
+        for x in input:
+            if x == "(":
+                beg_sp_amount += 1
+            else:
+                break
+
+        for i in range(0, beg_sp_amount):
+            if erase_btwn_parn(input).strip() == "":
                 input = input[1 : len(input) - 1]
+            else:
+                break
     except:
         pass
 
     if return_type == "lst":
         return input # 'input' should be a list,
-                     # so, no need to convert to return it as a list.
+                     # so, no need to convert it (to return it as a list).
     else:
         return list_to_str(input) # Here we convert 'input' (list) to String format.
 
 def reverse_str(str):
     return list_to_str(reversed(str_to_list(str)))
-
+        traceback.print_exc()
 def count_char(input, char): # This function returns the amount of the specified character occurences in the input.
                              # 'input' can be of types String or List.
     occurences = 0

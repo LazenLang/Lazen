@@ -5,18 +5,16 @@ def go(token_list):
 	result, multiplication, addition, substraction, division, modulo,\
 	power, ampersand, comma, factorial = [],[],[],[],[],[],[],[],[],[]
 
-	adder, counter_complete, opnd_parn = 0, False, 0
+	adder, counter_complete, opnd_parn = 0, 0, 0
 
 	for x in token_list:
 		counter_complete += len(x)
 		if x == "(" or x == ")":
 			if x == "(":
-				if not opnd_parn:
-					opnd_parn = True
+				opnd_parn += 1
 			elif x == ")":
-				if opnd_parn:
-					opnd_parn = False
-		if opnd_parn:
+				opnd_parn -= 1
+		if opnd_parn > 0:
 			continue
 		if x == "*":
 			multiplication.append(counter_complete-1)
@@ -46,7 +44,6 @@ def go(token_list):
 							addition, factorial]
 
 	for counter, browse_in in enumerate(sorted_op_lst):
-
 		if browse_in in token_list and text_utilities.check_if_contains(browse_in, \
 		text_utilities.erase_btwn_parn(token_list)) in sorted_opIdxLst_lst[counter]:
 			parse_1, found_op = parse_math_expr(text_utilities.list_to_str(token_list), browse_in, sorted_opIdxLst_lst[counter]), True
@@ -56,9 +53,9 @@ def go(token_list):
 		if not len(token_list) == 0:
 			if not text_utilities.check_if_type(text_utilities.list_to_str(token_list), "str") \
 			and not text_utilities.check_if_type(text_utilities.list_to_str(token_list), "char"):
-				parse_1 = go(text_utilities.list_to_str(token_list) + "+0")
+				parse_1 = go(text_utilities.list_to_str(text_utilities.remove_parn(token_list, "lst")) + "+0")
 			else:
-				parse_1 = go(text_utilities.list_to_str(token_list) + "&\"\"")
+				parse_1 = go(text_utilities.list_to_str(text_utilities.remove_parn(token_list, "lst")) + "&\"\"")
 		else:
 			parse_1 = ""
 
@@ -82,7 +79,8 @@ def parse_math_expr(expr, operator, operatorIndexes):
 			result_to_put = text_utilities.list_to_str(token_list[adder: x])
 			if "+" in result_to_put or "-" in result_to_put or "*" in result_to_put or \
 			"/" in result_to_put or "^" in result_to_put or "%" in result_to_put or \
-			"(" in result_to_put or ")" in result_to_put or "!" in result_to_put:
+			"(" in result_to_put or ")" in result_to_put or "!" in result_to_put or \
+			"," in result_to_put or "&" in result_to_put:
 
 				if not text_utilities.check_if_type(result_to_put, "str") and \
 				not text_utilities.check_if_type(result_to_put, "char"):

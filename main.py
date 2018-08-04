@@ -22,9 +22,8 @@ for counter, x in enumerate(sys.argv):
                 else:
                     break
 
-            file_name = file_name.strip()
+            file_name, file_read = file_name.strip(), ""
 
-            file_read = ""
             try:
                 fstream = open(file_name)
                 file_read = fstream.read()

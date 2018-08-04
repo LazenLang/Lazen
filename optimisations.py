@@ -52,8 +52,7 @@ def tokenizer_optimize(token_list, phase = 1):
             elif counter - 1 == -1:
                 print("") """
         #get_before = " "
-        get_after = " "
-        get_after_db = " "
+        get_after, get_after_db = " ", " "
         try:
             #get_before = token_list[counter - 1]
             get_after = token_list[counter + 1]
