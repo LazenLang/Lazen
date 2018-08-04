@@ -12,7 +12,14 @@ def erase_btwn_parn(input): # This function will erase the text between every pa
                             # 'input' can be of  types String or List.
     result = ""
     opnd_parn = False
+
+    input_modificated = []
+
     for x in input:
+        for x2 in x:
+            input_modificated.append(x2)
+
+    for x in input_modificated:
         if x == "(":
             opnd_parn = True
             result += " "

@@ -3,7 +3,7 @@ def go(token_list):
 	token_list = text_utilities.remove_parn(token_list, "lst")
 
 	result, multiplication, addition, substraction, division, modulo,\
-	power, ampersand, comma = [],[],[],[],[],[],[],[],[]
+	power, ampersand, comma, factorial = [],[],[],[],[],[],[],[],[],[]
 
 	adder, counter_complete, opnd_parn = 0, False, 0
 
@@ -34,35 +34,35 @@ def go(token_list):
 			ampersand.append(counter_complete-1)
 		elif x == ",":
 			comma.append(counter_complete-1)
+		elif x == "!":
+			factorial.append(counter_complete-1)
 			# 5 + 5 * 6
 
 	parse_1 = "NULL"
 
-	if "," in token_list and text_utilities.check_if_contains(",", text_utilities.erase_btwn_parn(token_list)) in comma:
-		parse_1 = parse_math_expr(text_utilities.list_to_str(token_list), ",", comma)
-	elif "&" in token_list and text_utilities.check_if_contains("&", text_utilities.erase_btwn_parn(token_list)) in ampersand:
-		parse_1 = parse_math_expr(text_utilities.list_to_str(token_list), "&", ampersand)
-	elif "^" in token_list and text_utilities.check_if_contains("^", text_utilities.erase_btwn_parn(token_list)) in power:
-		parse_1 = parse_math_expr(text_utilities.list_to_str(token_list), "^", power)
-	elif "*" in token_list and text_utilities.check_if_contains("*", text_utilities.erase_btwn_parn(token_list)) in multiplication:
-		parse_1 = parse_math_expr(text_utilities.list_to_str(token_list), "*", multiplication)
-	elif "/" in token_list and text_utilities.check_if_contains("/", text_utilities.erase_btwn_parn(token_list)) in division:
-		parse_1 = parse_math_expr(text_utilities.list_to_str(token_list), "/", division)
-	elif "%" in token_list and text_utilities.check_if_contains("%", text_utilities.erase_btwn_parn(token_list)) in modulo:
-		parse_1 = parse_math_expr(text_utilities.list_to_str(token_list), "%", modulo)
-	elif "-" in token_list and text_utilities.check_if_contains("-", text_utilities.erase_btwn_parn(token_list)) in substraction:
-		parse_1 = parse_math_expr(text_utilities.list_to_str(token_list), "-", substraction)
-	elif "+" in token_list and text_utilities.check_if_contains("+", text_utilities.erase_btwn_parn(token_list)) in addition:
-		parse_1 = parse_math_expr(text_utilities.list_to_str(token_list), "+", addition)
-	else:
+	# , & ^ * / % - +
+	sorted_op_lst, found_op = [",", "&", "^", "*", "/", "%", "-", "+", "!"], False
+	sorted_opIdxLst_lst = [comma, ampersand, power, multiplication, division, modulo, substraction, \
+							addition, factorial]
+
+	for counter, browse_in in enumerate(sorted_op_lst):
+
+		if browse_in in token_list and text_utilities.check_if_contains(browse_in, \
+		text_utilities.erase_btwn_parn(token_list)) in sorted_opIdxLst_lst[counter]:
+			parse_1, found_op = parse_math_expr(text_utilities.list_to_str(token_list), browse_in, sorted_opIdxLst_lst[counter]), True
+			break
+
+	if not found_op:
 		if not len(token_list) == 0:
 			if not text_utilities.check_if_type(text_utilities.list_to_str(token_list), "str") \
-			and not text_utilities.check_if_type(text_utilities.list_of_str(token_list), "char"):
+			and not text_utilities.check_if_type(text_utilities.list_to_str(token_list), "char"):
 				parse_1 = go(text_utilities.list_to_str(token_list) + "+0")
 			else:
 				parse_1 = go(text_utilities.list_to_str(token_list) + "&\"\"")
 		else:
 			parse_1 = ""
+
+
 	return parse_1
 
 	"""
@@ -82,12 +82,13 @@ def parse_math_expr(expr, operator, operatorIndexes):
 			result_to_put = text_utilities.list_to_str(token_list[adder: x])
 			if "+" in result_to_put or "-" in result_to_put or "*" in result_to_put or \
 			"/" in result_to_put or "^" in result_to_put or "%" in result_to_put or \
-			"(" in result_to_put or ")" in result_to_put:
+			"(" in result_to_put or ")" in result_to_put or "!" in result_to_put:
 
 				if not text_utilities.check_if_type(result_to_put, "str") and \
 				not text_utilities.check_if_type(result_to_put, "char"):
 					result_to_put = go(text_utilities.str_to_list(result_to_put))
 					multi_str = True
+					pass
 
 			if not multi_str:
 				result += "\n\t" + result_to_put
