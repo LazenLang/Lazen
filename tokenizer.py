@@ -19,11 +19,11 @@ def tokenize_line(line, line_counter, return_raw = False):
 
     if return_raw:
         return line_result_raw
-    opened_str = False
-    opened_char = False
-    build_str = ""
-    build_char = ""
+
+    opened_str, opened_char = False, False
+    build_str, build_char = "", ""
     i3_counter = 0
+
     for i3 in line_result_raw:
         if opened_str:
             if not i3 == "\"":
@@ -54,12 +54,9 @@ def tokenize_line(line, line_counter, return_raw = False):
                 line_result.append(build_char)
                 build_char = ""
                 opened_char = False
-    line_result_copy = []
-    line_result_copy_1 = []
-    line_result_final = []
-    counter_1 = 0
-    x = 0
-    precedent_i8 = ""
+
+    line_result_copy, line_result_copy_1, line_result_final = [],[],[]
+    counter_1, x, precedent_i8 = 0, 0, ""
 
     for i8 in line_result:
         if not i8.strip() == "":
@@ -128,7 +125,15 @@ def tokenize_line(line, line_counter, return_raw = False):
                 continue
         temp_list.append(x)
 
+    """
+    Ajouter les opérateurs à double-signe,
+    exemples : ==, !=, <=, >=, +=,
+    /=, *=, -=, ^=, %=,
 
+    Fixer l'optimisateur. (facultatif, peut être fait plus tard)
+
+    Gérer les fonctions dans les expressions.
+    """
     #####################################################
     try:
         if line_result_copy_1[len(line_result_copy_1) - 1] == ";": # Detects and remove an eventually existing semicolon at the end of the line.

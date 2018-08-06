@@ -32,6 +32,18 @@ def erase_btwn_parn(input): # This function will erase the text between every pa
             result += " "
     return result
 
+def erase_btwn_str(input): # This function will erase the text between every string literal,
+                           # including the string literal symbols themselves.
+    opened_str, result = False, ""
+    for x in input:
+        if x == "\"":
+            if not opened_str: opened_str = True
+            elif opened_str: opened_str = False
+            continue
+        if not opened_str:
+            result += x
+    return result
+
 def repeat_char(char, times):
     result = ""
     for i in range(0, times):
@@ -40,7 +52,8 @@ def repeat_char(char, times):
 
 def check_if_type(input, type = "str"): # This function will check if 'input' is a Lazen string, char, numeric or letter.
     if type == "str":
-        if input.strip()[0] == "\"" and input.strip()[len(input.strip()) - 1] == "\"":
+        if input.strip()[0] == "\"" and input.strip()[len(input.strip()) - 1] == "\""\
+        and erase_btwn_str(input).strip() == "":
             return True
     elif type == "char":
         if input.strip()[0] == "\'" and input.strip()[len(input.strip()) - 1] == "\'" and len(input.strip()) == 3:
@@ -105,7 +118,7 @@ def remove_parn(input, return_type = "str"): # 'input' must be a list,
 
 def reverse_str(str):
     return list_to_str(reversed(str_to_list(str)))
-        traceback.print_exc()
+
 def count_char(input, char): # This function returns the amount of the specified character occurences in the input.
                              # 'input' can be of types String or List.
     occurences = 0
@@ -120,8 +133,7 @@ def count_char(input, char): # This function returns the amount of the specified
 def check_if_contains(looking_for_char, list_or_string): # Python provides a "x in ..." to check if something contains something.
                                                         # But this function will return the index where the character you're looking
                                                          # for was found.
-    for counter,x in enumerate(list_or_string):
-        if x == looking_for_char:
-            return counter
+    if looking_for_char in list_or_string:
+        return list_or_string.find(looking_for_char)
 
     return -1
