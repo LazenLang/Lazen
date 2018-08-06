@@ -6,7 +6,8 @@ def go(token_list):
 	power, ampersand, comma, factorial, setvalue, greater, \
 	smaller, compare, different, less_equal, greater_equal, \
 	plus_equal, divide_equal, mul_equal, minus_equal, pow_equal, \
-	mod_equal = [],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]
+	mod_equal, concatenate = [],[],[],[],[],[],[],[],[],[],[],[],[],\
+	[],[],[],[],[],[],[],[],[],[],[]
 
 	adder, counter_complete, opnd_parn = 0, 0, 0
 
@@ -39,23 +40,20 @@ def go(token_list):
 		elif x == "-=":	minus_equal.append(counter_complete-2)
 		elif x == "^=":	pow_equal.append(counter_complete-2)
 		elif x == "%=": mod_equal.append(counter_complete-2)
+		elif x == "&=": concatenate.append(counter_complete-2)
 
 		# 5 + 5 * 6
+	sorted_op_lst, found_op, parse_1 = ["==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", \
+	",", "&", "^", "*", "/", "%", "-", "+", "!"], False, "(null)"
 
-	parse_1 = "NULL"
-
-	# , & ^ * / % - +
-	sorted_op_lst, found_op = ["==", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", \
-	",", "&", "^", "*", "/", "%", "-", "+", "!"], False
-
-	sorted_opIdxLst_lst = [compare, different, less_equal, greater_equal, plus_equal, divide_equal, mul_equal,\
+	sorted_opIdxLst_lst = [compare, concatenate, different, less_equal, greater_equal, plus_equal, divide_equal, mul_equal,\
 	minus_equal, pow_equal, mod_equal, setvalue, greater, smaller, comma, ampersand, power, multiplication,\
 	division, modulo, substraction, addition, factorial]
 
 	for counter, browse_in in enumerate(sorted_op_lst):
 		if browse_in in token_list and text_utilities.check_if_contains(browse_in, \
 		text_utilities.erase_btwn_parn(token_list)) in sorted_opIdxLst_lst[counter]:
-			parse_1, found_op = parse_math_expr(text_utilities.list_to_str(token_list), browse_in, sorted_opIdxLst_lst[counter]), True
+			parse_1, found_op = parse_expr(text_utilities.list_to_str(token_list), browse_in, sorted_opIdxLst_lst[counter]), True
 			break
 	if not found_op:
 		if not len(token_list) == 0:
@@ -71,13 +69,13 @@ def go(token_list):
 	4 - Addition/Substraction
 	"""
 
-def parse_math_expr(expr, operator, operatorIndexes):
+def parse_expr(expr, operator, operatorIndexes):
 		token_list, result, adder, multi_str = text_utilities.str_to_list(expr), operator, 0, False
 		for counter, x in enumerate(operatorIndexes):
 			if counter == 0 and len(operatorIndexes) > 0: operatorIndexes.append(len(token_list))
 
 			result_to_put = text_utilities.list_to_str(token_list[adder: x])
-			trigger_operators, triggered = ["==", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", \
+			trigger_operators, triggered = ["==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", \
 			",", "&", "^", "*", "/", "%", "-", "+", "!", "(", ")"], False
 			trigger_op = ""
 

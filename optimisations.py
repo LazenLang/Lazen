@@ -18,9 +18,8 @@ def tokenizer_optimize(token_list, phase = 1):
         except:
             break_end = True
 
-        assemble = str(x) + str(get_after)
-
         if x == "!" and get_after == "=": result.append("!=")
+
         elif x == "=" and get_after == "=": result.append("==")
         elif x == "<" and get_after == "=": result.append("<=")
         elif x == ">" and get_after == "=": result.append(">=")
@@ -30,6 +29,7 @@ def tokenizer_optimize(token_list, phase = 1):
         elif x == "*" and get_after == "=": result.append("*=")
         elif x == "^" and get_after == "=": result.append("^=")
         elif x == "%" and get_after == "=": result.append("%=")
+        elif x == "&" and get_after == "=": result.append("&=")
 
         else:
             counter_impact -= 1
