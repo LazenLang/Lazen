@@ -6,8 +6,8 @@ def go(token_list):
 	power, ampersand, comma, factorial, setvalue, greater, \
 	smaller, compare, different, less_equal, greater_equal, \
 	plus_equal, divide_equal, mul_equal, minus_equal, pow_equal, \
-	mod_equal, concatenate = [],[],[],[],[],[],[],[],[],[],[],[],[],\
-	[],[],[],[],[],[],[],[],[],[],[]
+	mod_equal, concatenate, func = [],[],[],[],[],[],[],[],[],[],[],[],[],\
+	[],[],[],[],[],[],[],[],[],[],[],[]
 
 	adder, counter_complete, opnd_parn = 0, 0, 0
 
@@ -30,6 +30,7 @@ def go(token_list):
 		elif x == "=": setvalue.append(counter_complete-1)
 		elif x == ">": greater.append(counter_complete-1)
 		elif x == "<": smaller.append(counter_complete-1)
+		elif x == "@": func.append(counter_complete-1)
 		elif x == "==": compare.append(counter_complete-2)
 		elif x == "!=": different.append(counter_complete-2)
 		elif x == "<=": less_equal.append(counter_complete-2)
@@ -41,24 +42,22 @@ def go(token_list):
 		elif x == "^=":	pow_equal.append(counter_complete-2)
 		elif x == "%=": mod_equal.append(counter_complete-2)
 		elif x == "&=": concatenate.append(counter_complete-2)
-
 		# 5 + 5 * 6
-	sorted_op_lst, found_op, parse_1 = ["==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", \
-	",", "&", "^", "*", "/", "%", "-", "+", "!"], False, "(null)"
+	sorted_op_lst, found_op, parse_1 = [",", "==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", "&", "^", "*", "/", "%", "-", "+", "@", "!"], False, "(null)"
 
-	sorted_opIdxLst_lst = [compare, concatenate, different, less_equal, greater_equal, plus_equal, divide_equal, mul_equal,\
-	minus_equal, pow_equal, mod_equal, setvalue, greater, smaller, comma, ampersand, power, multiplication,\
-	division, modulo, substraction, addition, factorial]
+	sorted_opIdxLst_lst = [comma, compare, concatenate, different, less_equal, greater_equal, plus_equal, divide_equal, mul_equal,\
+	minus_equal, pow_equal, mod_equal, setvalue, greater, smaller, ampersand, power, multiplication,\
+	division, modulo, substraction, addition, func, factorial]
 
 	for counter, browse_in in enumerate(sorted_op_lst):
 		if browse_in in token_list and text_utilities.check_if_contains(browse_in, \
 		text_utilities.erase_btwn_parn(token_list)) in sorted_opIdxLst_lst[counter]:
 			parse_1, found_op = parse_expr(text_utilities.list_to_str(token_list), browse_in, sorted_opIdxLst_lst[counter]), True
 			break
+
 	if not found_op:
-		if not len(token_list) == 0:
-				parse_1 = go(text_utilities.list_to_str(text_utilities.remove_parn(token_list, "lst")) + "&\"\"")
-		else: parse_1 = ""
+		if len(token_list) == 0: parse_1 = ""
+		else: parse_1 = text_utilities.list_to_str(text_utilities.remove_parn(token_list, "lst"))
 
 	return parse_1
 
@@ -76,7 +75,7 @@ def parse_expr(expr, operator, operatorIndexes):
 
 			result_to_put = text_utilities.list_to_str(token_list[adder: x])
 			trigger_operators, triggered = ["==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", \
-			",", "&", "^", "*", "/", "%", "-", "+", "!", "(", ")"], False
+			",", "&", "^", "*", "/", "%", "-", "+", "!", "(", ")", "@"], False
 			trigger_op = ""
 
 			for x2 in trigger_operators:
@@ -89,10 +88,12 @@ def parse_expr(expr, operator, operatorIndexes):
 				not text_utilities.check_if_type(result_to_put, "char"):
 					arg_to_put = result_to_put
 					if len(operator) > 1 and counter > 0: arg_to_put = arg_to_put[1:len(arg_to_put)]
-
 					result_to_put = go(arg_to_put)
 					multi_str = True
 					pass
+			if operator == "@" and result_to_put.strip() == "":
+				adder = x + 1
+				continue
 
 			if not multi_str: result += "\n\t" + result_to_put
 			else:

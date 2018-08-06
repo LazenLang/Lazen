@@ -2,13 +2,14 @@ import info
 import traceback
 import text_utilities
 import tokenizer
-def tokenizer_optimize(token_list, phase = 1):
+def tokenizer_optimize(token_list):
     # Basic Tokens Optimisations, Examples -
     # +1 -> 1 | +(1+1) -> (1+1)
     # -1 -> (0-1) | -(5+5) -> (0-(5+5))
     # 1++ -> (1+1) | (1+5)++ -> ((1+5)+1)
 
     result, counter_impact, break_end = [], 0, False
+
     for counter in range(0, len(token_list)):
         if counter_impact > len(token_list)-1: break
         get_after, x = "", token_list[counter_impact]
@@ -31,6 +32,10 @@ def tokenizer_optimize(token_list, phase = 1):
         elif x == "%" and get_after == "=": result.append("%=")
         elif x == "&" and get_after == "=": result.append("&=")
 
+        elif not x in info.tokenizing_symbols and not x == "@" and get_after == "(":
+            counter_impact -= 1
+            result.append(x)
+            result.append("@")
         else:
             counter_impact -= 1
             result.append(x)

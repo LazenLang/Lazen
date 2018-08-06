@@ -72,7 +72,7 @@ def tokenize_line(line, line_counter, return_raw = False):
     ###################################
 
     # Invalid Symbols Verification (fast) #
-    symb_white, count_col = info.tokenizing_symbols, 0
+    symb_white, count_col = info.tokenizing_symbols + ["_", "\\"], 0
 
     for cc in line_result_copy_1:
         count_col += len(cc)
