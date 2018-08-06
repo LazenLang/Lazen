@@ -1,3 +1,0 @@
-def get_error(id):
-  if id == "0001":
-    return ""
