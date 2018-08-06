@@ -1,7 +1,6 @@
 import text_utilities, optimisations
 def go(token_list):
 	token_list = optimisations.tokenizer_optimize(text_utilities.bake_lit(text_utilities.remove_parn(token_list, "lst")))
-	print("return is ", token_list)
 
 	result, multiplication, addition, substraction, division, modulo,\
 	power, ampersand, comma, factorial, setvalue, greater, \
