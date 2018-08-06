@@ -1,13 +1,14 @@
 import text_utilities, optimisations
 def go(token_list):
-	token_list = optimisations.tokenizer_optimize(text_utilities.remove_parn(token_list, "lst"))
+	token_list = optimisations.tokenizer_optimize(text_utilities.bake_lit(text_utilities.remove_parn(token_list, "lst")))
+	print("return is ", token_list)
 
 	result, multiplication, addition, substraction, division, modulo,\
 	power, ampersand, comma, factorial, setvalue, greater, \
 	smaller, compare, different, less_equal, greater_equal, \
 	plus_equal, divide_equal, mul_equal, minus_equal, pow_equal, \
-	mod_equal, concatenate, func = [],[],[],[],[],[],[],[],[],[],[],[],[],\
-	[],[],[],[],[],[],[],[],[],[],[],[]
+	mod_equal, concatenate, func, and_op, or_op, not_op, in_op, func_first = [],[],[],[],[],[],[],[],[],[],[],[],[],\
+	[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]
 
 	adder, counter_complete, opnd_parn = 0, 0, 0
 
@@ -31,6 +32,7 @@ def go(token_list):
 		elif x == ">": greater.append(counter_complete-1)
 		elif x == "<": smaller.append(counter_complete-1)
 		elif x == "@": func.append(counter_complete-1)
+		elif x == "$": func_first.append(counter_complete-1)
 		elif x == "==": compare.append(counter_complete-2)
 		elif x == "!=": different.append(counter_complete-2)
 		elif x == "<=": less_equal.append(counter_complete-2)
@@ -42,17 +44,22 @@ def go(token_list):
 		elif x == "^=":	pow_equal.append(counter_complete-2)
 		elif x == "%=": mod_equal.append(counter_complete-2)
 		elif x == "&=": concatenate.append(counter_complete-2)
+		elif x == "&&": and_op.append(counter_complete-2)
 		# 5 + 5 * 6
-	sorted_op_lst, found_op, parse_1 = [",", "==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", "&", "^", "*", "/", "%", "-", "+", "@", "!"], False, "(null)"
 
-	sorted_opIdxLst_lst = [comma, compare, concatenate, different, less_equal, greater_equal, plus_equal, divide_equal, mul_equal,\
-	minus_equal, pow_equal, mod_equal, setvalue, greater, smaller, ampersand, power, multiplication,\
-	division, modulo, substraction, addition, func, factorial]
+	sorted_op_lst, found_op, parse_1 = ["$", ",", "&&", "==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", \
+	"<", "&", "^", "*", "/", "%", "-", "+", "@", "!"], False, "(null)"
+
+	sorted_opIdxLst_lst = [func_first, comma, and_op, compare, concatenate, different, less_equal, greater_equal, \
+	plus_equal, divide_equal, mul_equal,minus_equal, pow_equal, mod_equal, setvalue, greater, smaller, ampersand, \
+	power, multiplication, division, modulo, substraction, addition, func, factorial]
 
 	for counter, browse_in in enumerate(sorted_op_lst):
 		if browse_in in token_list and text_utilities.check_if_contains(browse_in, \
 		text_utilities.erase_btwn_parn(token_list)) in sorted_opIdxLst_lst[counter]:
-			parse_1, found_op = parse_expr(text_utilities.list_to_str(token_list), browse_in, sorted_opIdxLst_lst[counter]), True
+			operator = browse_in
+			if operator == "$": operator = "@"
+			parse_1, found_op = parse_expr(text_utilities.list_to_str(token_list), operator, sorted_opIdxLst_lst[counter]), True
 			break
 
 	if not found_op:
@@ -74,7 +81,7 @@ def parse_expr(expr, operator, operatorIndexes):
 			if counter == 0 and len(operatorIndexes) > 0: operatorIndexes.append(len(token_list))
 
 			result_to_put = text_utilities.list_to_str(token_list[adder: x])
-			trigger_operators, triggered = ["==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", \
+			trigger_operators, triggered = ["$", "&&", "==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", \
 			",", "&", "^", "*", "/", "%", "-", "+", "!", "(", ")", "@"], False
 			trigger_op = ""
 
@@ -86,8 +93,8 @@ def parse_expr(expr, operator, operatorIndexes):
 			if triggered:
 				if not text_utilities.check_if_type(result_to_put, "str") and \
 				not text_utilities.check_if_type(result_to_put, "char"):
-					arg_to_put = result_to_put
-					if len(operator) > 1 and counter > 0: arg_to_put = arg_to_put[1:len(arg_to_put)]
+					arg_to_put = text_utilities.remspaces_bn(result_to_put)
+					if len(operator) > 1 and counter > 0: arg_to_put = arg_to_put[len(operator)-1:len(arg_to_put)]
 					result_to_put = go(arg_to_put)
 					multi_str = True
 					pass
@@ -95,10 +102,12 @@ def parse_expr(expr, operator, operatorIndexes):
 				adder = x + 1
 				continue
 
-			if not multi_str: result += "\n\t" + result_to_put
+			# result_to_put = result_to_put.replace("\t", "\\t")
+
+			if not multi_str: result += "\n~" + result_to_put.strip()
 			else:
 				for x2 in result_to_put.split("\n"):
-					result += "\n\t" + x2
+					result += "\n~" + text_utilities.remspaces_bn(x2)
 
 			adder = x + 1
 

@@ -1,7 +1,7 @@
 import info
 import errors
 import text_utilities
-def tokenize_line(line, line_counter, return_raw = False):
+def tokenize_line(line, line_counter, return_w_spces, return_raw = False):
     line_result_raw = []
     line_result = []
     adder = 0
@@ -59,9 +59,12 @@ def tokenize_line(line, line_counter, return_raw = False):
     counter_1, x, precedent_i8 = 0, 0, ""
 
     for i8 in line_result:
-        if not i8.strip() == "":
-            line_result_copy.append(i8.strip())
-
+        if not return_w_spces:
+            if not i8.strip() == "":
+                line_result_copy.append(i8.strip())
+        else:
+            if i8 == " " or not i8 == "":
+                line_result_copy.append(i8)
     # Removes end-line comments #
 
     for counter, i9 in enumerate(line_result_copy):
@@ -120,8 +123,6 @@ def tokenize_line(line, line_counter, return_raw = False):
             symb_olist = last_four_symb[0]
             if symb_olist == "+" or symb_olist == "-":
                 errors.pup_error(errors.get_error("0009", str(line_counter + 2), symb_olist, str(col_cnter - 3)))
-
-
                 continue
         temp_list.append(x)
 
@@ -142,11 +143,11 @@ def tokenize_line(line, line_counter, return_raw = False):
         pass
     return line_result_copy_1
 
-def go(code):
+def go(code, return_w_spces = False):
     result = []
     line_counter = -1
     for i in code.split("\n"):
-        _tokenizeLn = tokenize_line(i, line_counter)
+        _tokenizeLn = tokenize_line(i, line_counter, return_w_spces, False)
         line_counter += 1
         result.append(_tokenizeLn);
     return result

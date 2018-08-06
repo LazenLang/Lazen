@@ -2,7 +2,7 @@ import info
 import traceback
 import text_utilities
 import tokenizer
-def tokenizer_optimize(token_list):
+def tokenizer_optimize(token_list, first_time = False):
     # Basic Tokens Optimisations, Examples -
     # +1 -> 1 | +(1+1) -> (1+1)
     # -1 -> (0-1) | -(5+5) -> (0-(5+5))
@@ -19,6 +19,15 @@ def tokenizer_optimize(token_list):
         except:
             break_end = True
 
+        if first_time and not x in info.tokenizing_symbols and not get_after in info.tokenizing_symbols and counter == 0:
+            result.append(x)
+            result.append("$")
+            result.append("(")
+            for x2 in token_list[counter_impact + 1 : len(token_list)]:
+                result.append(x2)
+            result.append(")")
+            break
+
         if x == "!" and get_after == "=": result.append("!=")
 
         elif x == "=" and get_after == "=": result.append("==")
@@ -31,8 +40,12 @@ def tokenizer_optimize(token_list):
         elif x == "^" and get_after == "=": result.append("^=")
         elif x == "%" and get_after == "=": result.append("%=")
         elif x == "&" and get_after == "=": result.append("&=")
+        elif x == "&" and get_after == "&": result.append("&&")
+        elif x.lower() == "and":
+            counter_impact -= 1
+            result.append("&&")
 
-        elif not x in info.tokenizing_symbols and not x == "@" and get_after == "(":
+        elif not x in info.tokenizing_symbols and not x == "@" and not x == "$" and get_after == "(":
             counter_impact -= 1
             result.append(x)
             result.append("@")

@@ -51,6 +51,7 @@ def repeat_char(char, times):
     return result
 
 def check_if_type(input, type = "str"): # This function will check if 'input' is a Lazen string, char, numeric or letter.
+    if input.strip() == "": return False
     if type == "str":
         if input.strip()[0] == "\"" and input.strip()[len(input.strip()) - 1] == "\""\
         and erase_btwn_str(input).strip() == "":
@@ -65,6 +66,61 @@ def check_if_type(input, type = "str"): # This function will check if 'input' is
         if is_letter(input.strip()):
             return True
     return False
+
+def remspaces_bn(input): # This function will remove every space at the beginning and the end of 'input'
+    beginning, end = 0, 0
+    for x in input:
+        if x == " ": beginning += 1
+        elif not x == " " and not x == "\t": break
+    for x in reversed(input):
+        if x == " ": end += 1
+        elif not x == " " and not x == "\t": break
+    return input[beginning : len(input) - end]
+
+def bake_lit(input): # 'input' should be a token list, this function transforms a token_list containing raw literals
+    """
+    print
+    (
+    "
+    a
+    "
+    )
+    """
+    # to ->
+    """
+    print
+    (
+    "a"
+    )
+    """
+    opened_str, opened_char, result, build_str, build_char = False, False, [], "", ""
+
+    for x in input:
+        if opened_str and not x == "\"":
+            build_str += x
+            continue
+        elif opened_char and not x == "\'":
+            build_char += x
+            continue
+
+        if x == "\"":
+            build_str += x
+            if not opened_str: opened_str = True
+            else:
+                result.append(build_str)
+                opened_str, build_str = False, ""
+            continue
+        elif x == "\'":
+            build_char += x
+            if not opened_char: opened_char = True
+            else:
+                result.append(build_char)
+                opened_char, build_char = False, ""
+            continue
+
+        result.append(x)
+
+    return result
 
 def is_int(input):
     num_list = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]

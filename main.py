@@ -6,7 +6,7 @@ import text_utilities
 
 file_to_interpret = ""
 
-print(text_utilities.check_if_contains("==", "a==a"))
+print("a" is "b" is "a")
 
 for counter, x in enumerate(sys.argv):
     if x.startswith("--"):
