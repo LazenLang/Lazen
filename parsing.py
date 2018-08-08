@@ -44,12 +44,15 @@ def go(token_list):
 		elif x == "%=": mod_equal.append(counter_complete-2)
 		elif x == "&=": concatenate.append(counter_complete-2)
 		elif x == "&&": and_op.append(counter_complete-2)
+		elif x == "||": or_op.append(counter_complete-2)
+		elif x == ":¨": not_op.append(counter_complete-2)
+		elif x == "§§": in_op.append(counter_complete-2)
 		# 5 + 5 * 6
 
-	sorted_op_lst, found_op, parse_1 = ["$", ",", "&&", "==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", \
+	sorted_op_lst, found_op, parse_1 = ["$", ",", "||", "&&", ":¨", "==", "§§", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", \
 	"<", "&", "^", "*", "/", "%", "-", "+", "@", "!"], False, "(null)"
 
-	sorted_opIdxLst_lst = [func_first, comma, and_op, compare, concatenate, different, less_equal, greater_equal, \
+	sorted_opIdxLst_lst = [func_first, comma, or_op, and_op, not_op, compare, in_op, concatenate, different, less_equal, greater_equal, \
 	plus_equal, divide_equal, mul_equal,minus_equal, pow_equal, mod_equal, setvalue, greater, smaller, ampersand, \
 	power, multiplication, division, modulo, substraction, addition, func, factorial]
 
@@ -80,7 +83,9 @@ def parse_expr(expr, operator, operatorIndexes):
 			if counter == 0 and len(operatorIndexes) > 0: operatorIndexes.append(len(token_list))
 
 			result_to_put = text_utilities.list_to_str(token_list[adder: x])
-			trigger_operators, triggered = ["$", "&&", "==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", \
+			if len(operator) > 1 and counter > 0: result_to_put = result_to_put[len(operator)-1:len(result_to_put)]
+
+			trigger_operators, triggered = ["$", "||", ":¨", "§§", "&&", "==", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", "<", \
 			",", "&", "^", "*", "/", "%", "-", "+", "!", "(", ")", "@"], False
 			trigger_op = ""
 
@@ -93,20 +98,20 @@ def parse_expr(expr, operator, operatorIndexes):
 				if not text_utilities.check_if_type(result_to_put, "str") and \
 				not text_utilities.check_if_type(result_to_put, "char"):
 					arg_to_put = text_utilities.remspaces_bn(result_to_put)
-					if len(operator) > 1 and counter > 0: arg_to_put = arg_to_put[len(operator)-1:len(arg_to_put)]
 					result_to_put = go(arg_to_put)
 					multi_str = True
 					pass
+
 			if operator == "@" and result_to_put.strip() == "":
 				adder = x + 1
 				continue
 
 			# result_to_put = result_to_put.replace("\t", "\\t")
 
-			if not multi_str: result += "\n~" + result_to_put.strip()
+			if not multi_str: result += "\n\t" + result_to_put.strip()
 			else:
 				for x2 in result_to_put.split("\n"):
-					result += "\n~" + text_utilities.remspaces_bn(x2)
+					result += "\n\t" + text_utilities.remspaces_bn(x2)
 
 			adder = x + 1
 
