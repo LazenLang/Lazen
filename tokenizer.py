@@ -87,7 +87,7 @@ def tokenize_line(line, line_counter, return_w_spces, return_raw = False):
                     column = count_col
                     if not counter == len(cc):
                         column == count_col - (len(cc) - counter)
-                    errors.pup_error(errors.get_error("0008", browse_in, str(line_counter + 2), str(column - 1)))
+                    errors.pup_error(errors.get_error("0008", browse_in, str(line_counter + 2), str(column)))
 
     # Symbols-Repetition Verification (fast) #
 
