@@ -1,0 +1,20 @@
+; en fin de ligne ==> Peut aller à la ligne suivante (si jmp, le jump est ignoré)
+
+function; ==> Déclaration de fonction et va à la ligne suivante
+
+Les fonctions:
+
+I/Les déclarations des fonctions:
+
+La fonction appelée en premier est la fonction main;
+Pour déclarer une fonction il suffit de faire : FuncName;
+
+II/Les paramètres des fonctions:
+
+Sont déclarés avec le storage temporaire params ou prms
+
+prms 1 <Paramètre>;
+call <Function>;
+
+Les paramètres sont clear automatiquement lorsque qu'une fonction est appelée est mit en cache
+ dans la liste Function_Vars = {Function: [0,0,0]} à la fin de la fonctions la section du dict dédié à la fonction est del
