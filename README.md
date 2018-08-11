@@ -11,7 +11,6 @@ Way many programming languages were created in the past, and everyday, a new pro
 
 Python, as an example, was the best programming language I have used before Lazen. Lazen is inspired by Python's and C#'s languages syntaxes. The syntax of many languages that inspired Lazen are pretty good, tiny, efficient, easy and fast to learn, read and understand.
 <br><br>
-Lazen is simple, it doesn't offers hundreds of solutions for every idea, but every solutions it offers are simple, fast-forward and efficient.
 
 </h2>Many reasons Why you should start learning the Lazen programming language today.</h2>
 
