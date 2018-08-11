@@ -25,19 +25,31 @@ def get_error(id, providedinfo = []):
         "Example : x(5 + 5) -> valid, x(" + providedinfo[0] + "5 + 5) -> unvalid."
     elif id == "0009":
         return "Incorrect symbol repetition (line: " + str(providedinfo[0]) + ", col: " + str(int(providedinfo[2]) + 3) + ").\n" \
-        "Additional Information : Symbol '" + providedinfo[1] + "' were repeated where it shouldn't be."
+        "Additional Information : Symbol '" + providedinfo[1] + "' were repeated where it shouldn't be.\n" \
+        "This symbol is a minus or plus operator; it means it can be repeated 3 times maximum."
     elif id == "0010":
-        return "Expected " + str(providedinfo[0]) + " or more value(s) for operator '" + str(providedinfo[1]) + "' where only \n" + str(providedinfo[2]) + " value(s) were provided.\n" \
+        return "Expected " + str(providedinfo[0]) + " or more value(s) for operator '" + str(providedinfo[1]) + "' where only \n" + str(providedinfo[2]) + " value(s) were provided. (line: " + str(providedinfo[3]) + ")\n" \
         "\nExample : x(5%4.25) -> valid, x(5%) -> unvalid."
     elif id == "0011":
         return "Expected " + str(providedinfo[0]) + " value(s) for operator '" + providedinfo[1] + "' where " + str(providedinfo[2]) + \
-        " value(s) were provided."
+        " value(s) were provided. (line: " + str(providedinfo[3]) + ")"
     elif id == "0012":
         return "Expected " + str(providedinfo[0]) + " or " + str(providedinfo[1]) + " values for operator '" + \
-        str(providedinfo[2]) + "' where " + str(providedinfo[3]) + " value(s) were provided."
+        str(providedinfo[2]) + "' where " + str(providedinfo[3]) + " value(s) were provided. (line: " + str(providedinfo[4]) + ")"
     elif id == "0013":
         return "Syntax Error (line: " + str(providedinfo[0]) + ", col: " + str(providedinfo[1])+ ")\n" \
         "Additional Information : " + providedinfo[2]
+    elif id == "0014":
+        return "Unknown/undeclared identifier '" + str(providedinfo[0]) + "'. (line: " + str(providedinfo[1]) + ")\n" \
+        "Example : print(lxk) -> unvalid because 'lxk' is not known or declared yet in the source-code."
+    elif id == "0015":
+        return "Invalid char literal " + str(providedinfo[0]) + ". (line: " + str(providedinfo[1]) + ")\n" \
+        "Example : print('a') -> valid, print('abc') -> unvalid."
+    elif id == "0016":
+        return "Unknown type for '" + str(providedinfo[0]) + "' (line: " + str(providedinfo[1]) + ")."
+    elif id == "0017":
+        return "Invalid identifier '" + str(providedinfo[0]) + "'. An identifier cannot start with a digit. (line: " + str(providedinfo[1])+ ")\n" \
+        "Example : print(tcx4) -> valid, print(4tcx) -> unvalid."
 
 def pup_error(message):
     print("\n\t      An error occured\n--------------------------------------------\n")

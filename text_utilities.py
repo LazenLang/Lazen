@@ -1,4 +1,5 @@
-import traceback
+import traceback, re, info
+
 def list_to_str(list):
     result = ""
     for x in list:
@@ -52,19 +53,33 @@ def repeat_char(char, times):
 
 def check_if_type(input, type = "str"): # This function will check if 'input' is a Lazen string, char, numeric or letter.
     if input.strip() == "": return False
+
     if type == "str":
         if input.strip()[0] == "\"" and input.strip()[len(input.strip()) - 1] == "\""\
-        and erase_btwn_str(input).strip() == "":
-            return True
+        and erase_btwn_str(input).strip() == "": return True
+
     elif type == "char":
-        if input.strip()[0] == "\'" and input.strip()[len(input.strip()) - 1] == "\'" and len(input.strip()) == 3:
-            return True
+        if input.strip()[0] == "\'" and input.strip()[len(input.strip()) - 1]\
+        == "\'" and len(input.strip()) in range(2,4): return True
+
     elif type == "num":
-        if is_int(input.strip()):
-            return True
+        if input.strip().isdigit(): return True
+
     elif type == "letter":
-        if is_letter(input.strip()):
-            return True
+        if input.strip().isalpha(): return True
+
+    elif type == "op":
+        if input in info.operators: return True
+
+    elif type == "symb":
+        if input in info.tokenizing_symbols: return True
+
+    elif type == "id":
+        if re.match("^(?![0-9])[a-zA-Z_0-9]*$", input.strip()): return True
+
+    elif type == "psymb":
+        if input in info.parsing_symbols: return True
+
     return False
 
 def remspaces_bn(input): # This function will remove every space at the beginning and the end of 'input'
@@ -88,7 +103,7 @@ def bake_lit(input): # 'input' should be a token list, this function transforms 
     """
     # to ->
     """
-    print
+    print:
     (
     "a"
     )
@@ -175,6 +190,19 @@ def remove_parn(input, return_type = "str"): # 'input' must be a list,
 
 def reverse_str(str):
     return list_to_str(reversed(str_to_list(str)))
+
+def get_type(input): # 'input' should be a String,
+                     # This function returns the type of the input by analysing it.
+
+    if check_if_type(input, "str"): return "str" # String literal
+    elif check_if_type(input, "char"): return "char" # Character literal
+    elif check_if_type(input, "num"): return "num" # Numeric literal
+    elif check_if_type(input, "op"): return "op" # Mathematical operator
+    elif check_if_type(input, "symb"): return "symb" # Lazen symbol
+    elif check_if_type(input, "id"): return "id" # Identifier
+    elif check_if_type(input, "psymb"): return "psymb" # Parsing symbol
+    else: return "unk" # Unknown type
+
 
 def count_chars_bg(input, char): # This function return the amount of specified character at the beginning of the input.
     amount = 0

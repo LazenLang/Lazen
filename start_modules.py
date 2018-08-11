@@ -22,7 +22,7 @@ def go(code):
                 continue
             x2 = ast_build.go(optimize_x) # Here we're building an abstract syntax tree from the optimized token list.
 
-            if ast_analysis.go(x2):
+            if ast_analysis.go(x2, counter+1):
                 print("we have to parse ", optimize_x)
                 print(x2)
                 print("-----------")
