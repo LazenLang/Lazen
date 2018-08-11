@@ -25,8 +25,7 @@ def get_error(id, providedinfo = []):
         "Example : x(5 + 5) -> valid, x(" + providedinfo[0] + "5 + 5) -> unvalid."
     elif id == "0009":
         return "Incorrect symbol repetition (line: " + str(providedinfo[0]) + ", col: " + str(int(providedinfo[2]) + 3) + ").\n" \
-        "Additional Information : Symbol '" + providedinfo[1] + "' were repeated where it shouldn't be.\n" \
-        "This symbol is a minus or plus operator; it means it can be repeated 3 times maximum."
+        "Additional Information : Symbol '" + providedinfo[1] + "' were repeated where it shouldn't be."
     elif id == "0010":
         return "Expected " + str(providedinfo[0]) + " or more value(s) for operator '" + str(providedinfo[1]) + "' where only \n" + str(providedinfo[2]) + " value(s) were provided.\n" \
         "\nExample : x(5%4.25) -> valid, x(5%) -> unvalid."
