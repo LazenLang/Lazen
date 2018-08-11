@@ -141,6 +141,7 @@ def remove_parn(input, return_type = "str"): # 'input' must be a list,
                                              # at the beginning and the end of the line.
     beg_sp_amount = 0
     # (5 + 5) | (5 + 5) * (6 + 1)
+
     try:
         if not count_char(input, "(") == count_char(input, ")"):
             if count_char(input, "(") > count_char(input, ")"):
@@ -174,6 +175,15 @@ def remove_parn(input, return_type = "str"): # 'input' must be a list,
 
 def reverse_str(str):
     return list_to_str(reversed(str_to_list(str)))
+
+def count_chars_bg(input, char): # This function return the amount of specified character at the beginning of the input.
+    amount = 0
+    for x in input:
+        if x == char:
+            amount += 1
+        else:
+            break
+    return amount
 
 def count_char(input, char): # This function returns the amount of the specified character occurences in the input.
                              # 'input' can be of types String or List.

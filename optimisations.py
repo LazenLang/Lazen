@@ -26,7 +26,9 @@ def tokenizer_optimize(token_list_raw, first_time = False):
         except:
             break_end = True
 
-        if first_time and not x in info.tokenizing_symbols and not get_after.strip() in info.tokenizing_symbols and counter == 0:
+        allowed_funcs = ["for", "print", "if", "while", "elif", "return"]
+        if first_time and not x in info.tokenizing_symbols and not get_after.strip() \
+        in info.tokenizing_symbols and counter == 0 and x.strip() in allowed_funcs:
             result_raw.append(x)
             result_raw.append("$")
             result_raw.append("(")
@@ -86,5 +88,5 @@ def tokenizer_optimize(token_list_raw, first_time = False):
 
     result = []
     for x in result_raw:
-        result.append(x.strip())
+       result.append(x.replace("\t", ""))
     return result

@@ -6,8 +6,6 @@ import text_utilities
 
 file_to_interpret = ""
 
-print("a" is "b" is "a")
-
 for counter, x in enumerate(sys.argv):
     if x.startswith("--"):
         raw_arg = x[2 : len(x)]
@@ -31,7 +29,7 @@ for counter, x in enumerate(sys.argv):
                 file_read = fstream.read()
                 fstream.close()
             except:
-                errors.pup_error(errors.get_error("0002", file_name))
+                errors.pup_error(errors.get_error("0002", [file_name]))
 
             start_modules.go(file_read)
 
