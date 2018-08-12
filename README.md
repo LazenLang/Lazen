@@ -1,11 +1,18 @@
 # Lazen
-The Lazen Programming Language
+The Lazen compiled open-source, object-oriented, efficient, simple, dynamically-typed and duck-typed programming language.
+
+<h2>How does Lazen work ?</h2>
+Although Lazen is compiled, it does not compile directly to machine language. Lazen programs are not interpreted directly by the processor of the machine.<br><br>
+
+
+Lazen will generate a LZB (Lazen Bytecode) file containing the necessary information for a Lazen program to be interpreted. You will need the Lazen virtual machine (bytecode interpreter) to run Lazen programs.<br><br>
+
+
+Many people think that a programming language that is made to be interpreted by it's own virtual machine might be "slow".
+But it's not always the case. Yes, it will be slower than some compiled programming languages; but it is not automatically slow. Keep in mind that many optimisations are made to this "bytecode representation" by the Lazen compiler.
 
 <h2>Why ?</h2>
-
- Lazen is made to be an interpreted AND compiled open-source, object-oriented, efficient, simple, dynamically-typed and duck-typed             programming language.
-<br><br>
-
+<br>
 Way many programming languages were created in the past, and everyday, a new programming language is created. I've personally used many good programming languages in my programming life. Lazen is modest. It will not try to be "original" or to invent some completly new programming concepts and/or paradigms. It is made for being one of the simplest and "universal" programming language. It is made for programmers who want to code what they think, it is made for programmers who want to spend more time on thinking about the final render of their software/code than on trying to fix syntaxic bugs/trying to understand syntax and/or looking for help on forums. Yes, with some advanced knowledge you should have less syntaxic/compilation/interpretation errors. But why not having less errors right now ? Without needing any advanced programming knowledge ? Lazen is made for that. When you're programming with Lazen, you think about your software itself less than his source code.
 <br><br>
 
