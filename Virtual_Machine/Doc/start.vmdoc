@@ -1,6 +1,3 @@
-; en fin de ligne ==> Peut aller à la ligne suivante (si jmp, le jump est ignoré)
-
-function; ==> Déclaration de fonction et va à la ligne suivante
 
 Les fonctions:
 
@@ -13,14 +10,14 @@ II/Les paramètres des fonctions:
 
 Sont déclarés avec le storage temporaire params ou prms
 
-prms <Paramètre>;
-call <Function>;
+prms:<Paramètre>;
+call:<Function>;
 
 Les paramètres sont clear automatiquement lorsque qu'une fonction est appelée est mit en cache
  dans la liste Function_Vars = {Function: [0,0,0]} à la fin de la fonctions la section du dict dédié à la fonction est del
 III/ Retourner une valeur avec une fonction:
 Nous faisons abstractions des types de fonctions, pour retourner une valeur il suffit de faire rtrn <Valeur/Variable>
-Pour une fonction qui ne retourne rien il faut faire rtrn 0 .
+Pour une fonction qui ne retourne rien il faut faire rtrn:0 .
 
 Les variables:
 I/Les différents types de variables:
@@ -36,7 +33,7 @@ Elle se réserve la valeur 0 du tableau
 III/La déclaration des variables et appel:
 Les variables ne sont que des nombres entiers avec une case dédiée
 La variable hello_world en Lazen serait traduit en 1 (numéro de la case où est la valeur)
-Pour déclarer une variable il suffit de faire : int 1 @<Valeur>@;
+Pour déclarer une variable il suffit de faire : int:Nb:@<Valeur>@;
 Pour appeler une variable (donc avoir sa valeur) il suffit de faire gv <Variable>;
 Pour déclarer une variable avec comme valeur le return d'une fonction int 0 @call Func@;
 
@@ -46,7 +43,7 @@ Le Bytecode prend en charge l'AST pour les calculs, il suffit de faire:
 
 Pour un entier avec comme calcul 5+5:
 
-int 1 ast;
+int:1:ast;
 +
   5
   5
@@ -56,5 +53,5 @@ La variable 1 sera égale à 10.
 
 Les différentes fonctions:
 
-out <variable> : sert à print une variable , aucune valeur n'est acceptée , il faut définir cela en last
-in <variable ou sera stocké l'entrée> : sert à récupérer une entrée , le thread s'arrête jusqu'à que l'entrée soit détectée
+out:<variable> : sert à print une variable , aucune valeur n'est acceptée , il faut définir cela en last
+in:<variable ou sera stocké l'entrée> : sert à récupérer une entrée , le thread s'arrête jusqu'à que l'entrée soit détectée

@@ -1,7 +1,7 @@
 #Test of the functions
 
-import Module_Importer as Module_Manager
-import Interpreter.Interpreter_Main as Interpreter
+import module_importer as Module_Manager
+import interpreter.interpreter_main as Interpreter
 import time
 modules = Module_Manager.get_modules()
 modules_funcs = []
