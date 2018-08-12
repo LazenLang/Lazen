@@ -1,0 +1,6 @@
+1 @main
+2 lbl:last:ast
+3 "Hello World !\n"
+4 east
+5 out:last
+6 rtrn 0
