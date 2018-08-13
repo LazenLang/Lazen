@@ -49,12 +49,12 @@ def go(token_list):
 		elif x == "§§": in_op.append(counter_complete-2)
 		# 5 + 5 * 6
 
-	sorted_op_lst, found_op, parse_1 = ["$", ",", "||", "&&", ":¨", "==", "§§", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", \
-	"<", "&", "^", "*", "/", "%", "-", "+", "@", "!"], False, "(null)"
+	sorted_op_lst, found_op, parse_1 = ["$", "=", ",", "||", "&&", ":¨", "==", "§§", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=", ">", \
+	"<", "&", "+", "-", "%", "/", "*", "^", "@", "!"], False, "(null)"
 
-	sorted_opIdxLst_lst = [func_first, comma, or_op, and_op, not_op, compare, in_op, concatenate, different, less_equal, greater_equal, \
-	plus_equal, divide_equal, mul_equal,minus_equal, pow_equal, mod_equal, setvalue, greater, smaller, ampersand, \
-	power, multiplication, division, modulo, substraction, addition, func, factorial]
+	sorted_opIdxLst_lst = [func_first, setvalue, comma, or_op, and_op, not_op, compare, in_op, concatenate, different, less_equal, greater_equal, \
+	plus_equal, divide_equal, mul_equal,minus_equal, pow_equal, mod_equal, greater, smaller, ampersand, \
+	addition, substraction, modulo, division, multiplication, power, func, factorial]
 
 	for counter, browse_in in enumerate(sorted_op_lst):
 		if browse_in in token_list and text_utilities.check_if_contains(browse_in, \

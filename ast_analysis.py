@@ -6,21 +6,25 @@ import errors
 declared_id = ["print", "if", "for", "while", "return", "else", "elif", "var1", "var2", "var3"]
 
 op_list = [",", "||", "&&", ":¨", "==", "§§", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", \
-"<", "&", "^", "*", "/", "%", "-", "+", "@", "!"] # The Lazen operators list.
+"<", "&", "+", "-", "%", "/", "*", "^", "@", "!"] # The Lazen operators list.
                                                   # Some aren't correct when used rawly on the source-code, as an example
                                                   # '@', '§§' and ':¨' are translated by the parser
 
 def go(ast, line_n): # This function will return True or False, True == everything is ok,
                      # False == there is an error, it has been printed on the
                      # console ( Stop starting modules and just quit() if False)
+
     tab_amounts, tab_operators, op_lns = [], [], []
-    op_elemc_lst = ["x|2", "x|2", "x|2", "1|", "x|2", "2|", "2|", "x|2", "x|2", "x|2", "2|", "2|", "2|", "2|", "2|", "2|", "2|", "x|2",\
-    "x|2", "x|2", "x|2", "x|2", "x|2", "x|2", "x|2", "x|2", "1/2|", "1|"]
+    op_elemc_lst = ["x|2", "x|2", "x|2", "1|", "x|2", "2|", "2|f_id", "x|2", "x|2", "x|2",\
+    "2|f_id", "2|f_id", "2|f_id", "2|f_id", "2|f_id", "2|f_id", "2|", "x|2",\
+    "x|2", "x|2", "x|2", "x|2", "x|2", "x|2", "x|2", "x|2", "1/2|", "1|"]  # f_id here means the first child must be an identifier
 
     for counter, x in enumerate(ast.split("\n")):
         if x.replace("\t", "") in op_list:
-            tab_operators.append(x.replace("\t", "")) # Here we append x (the operator) to the list 'tab_operators'.
-            op_lns.append(counter) # We append the line where x (the ope  rator) was encountered, in the same array as in tab_operators.
+
+            tab_operators.append(x.replace("\t", ""))   # Here we append x (the operator) to the list 'tab_operators'.
+            op_lns.append(counter)  # We append the line where x (the ope  rator) was encountered, in the same array as in tab_operators.
+
             tab_amounts.append(text_utilities.count_chars_bg(x, "\t") + 1) # We append the tab amount before x (the operator)
                                                                            # to the list 'tab_amounts'.
 
@@ -44,13 +48,16 @@ def go(ast, line_n): # This function will return True or False, True == everythi
 
         elif "/" in elemc_splt[0]:
             fnd_one, splt_slsh = False, elemc_splt[0].split("/")
-
             for x2 in splt_slsh:
                 if len(children) == int(x2):
                     fnd_one = True
                     break
 
             if not fnd_one: errors.pup_error(errors.get_error("0012", [splt_slsh[0], splt_slsh[1], x, len(children), line_n]))
+
+        if elemc_splt[1] == "f_id":
+            if not text_utilities.get_type(children[0]) == "id": errors.pup_error(errors.get_error(\
+            "0018", [children[0], x, line_n]))
 
         ###################################################################################################
 
@@ -63,6 +70,8 @@ def go(ast, line_n): # This function will return True or False, True == everythi
 
         if getType == "id":
             if not x.strip().lower() in declared_id: errors.pup_error(errors.get_error("0014", [x.strip(), line_n]))
+            pass # This is temporary, so i just have to delete the line above when i don't want the
+                 # analyzer to check if each identifier exists.
 
         elif getType == "unk":
 

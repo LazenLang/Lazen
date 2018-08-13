@@ -3,53 +3,77 @@ import info, text_utilities
 def get_error(id, providedinfo = []):
     if id == "0001":
         return "File-path expected after '--file' argument."
+
     elif id == "0002":
         return "Unable to read the file '" + str(providedinfo[0]) + "'."
+
     elif id == "0003":
         return "Incorrect symbol repetition (line: " + str(providedinfo[0]) + ", col: " + str(providedinfo[2]) + ").\n" \
         "Additional Information : Symbol '" + providedinfo[1] + "' were repeated where it shouldn't be."
+
     elif id == "0004":
         return "Unclosed Char literal. Excepted (') after each ('). (line: " + str(providedinfo[0]) + ")\n" \
         "Example : print('a') -> valid, print('a) -> unvalid."
+
     elif id == "0005":
         return "Unclosed String literal. Excepted (\") after each (\"). (line: " + str(providedinfo[0]) + ")\n" \
         "Example : print(\"text\") -> valid, print(\"text) -> unvalid."
+
     elif id == "0006":
         return "Unclosed Parenthesis. Expected ')' after each '('. (line: " + str(providedinfo[0]) + ")\n" \
         "Example : x(a(5) * 5) -> valid, x(a(5 * 5) -> unvalid."
+
     elif id == "0007":
         return "Unnecessary closing parenthesis. Expected '(' before each ')'. (line: " + str(providedinfo[0]) + ")\n" \
         "Example : x(a(5) * 5) -> valid, x(a(5) * 5)) -> unvalid."
+
     elif id == "0008":
-        return "Invalid character '" + str(providedinfo[0]) + "' (line: " + str(providedinfo[1]) +", col: " + str(providedinfo[2]) + ")\n" \
+        return "Invalid character '" + str(providedinfo[0]) + "' (line: " +\
+        str(providedinfo[1]) +", col: " + str(providedinfo[2]) + ")\n"
         "Example : x(5 + 5) -> valid, x(" + providedinfo[0] + "5 + 5) -> unvalid."
+
     elif id == "0009":
         return "Incorrect symbol repetition (line: " + str(providedinfo[0]) + ", col: " + str(int(providedinfo[2]) + 3) + ").\n" \
         "Additional Information : Symbol '" + providedinfo[1] + "' were repeated where it shouldn't be.\n" \
         "This symbol is a minus or plus operator; it means it can be repeated 3 times maximum."
+
     elif id == "0010":
-        return "Expected " + str(providedinfo[0]) + " or more value(s) for operator '" + str(providedinfo[1]) + "' where only \n" + str(providedinfo[2]) + " value(s) were provided. (line: " + str(providedinfo[3]) + ")\n" \
-        "\nExample : x(5%4.25) -> valid, x(5%) -> unvalid."
+        return "Expected " + str(providedinfo[0]) + " or more value(s) for operator '" + \
+        str(providedinfo[1]) + "' where only \n" + str(providedinfo[2]) + " value(s) were provided. \
+        (line: " + str(providedinfo[3]) + ")\n" + "\nExample : x(5%4.25) -> valid, x(5%) -> unvalid."
+
     elif id == "0011":
-        return "Expected " + str(providedinfo[0]) + " value(s) for operator '" + providedinfo[1] + "' where " + str(providedinfo[2]) + \
-        " value(s) were provided. (line: " + str(providedinfo[3]) + ")"
+        return "Expected " + str(providedinfo[0]) + " value(s) for operator '" + providedinfo[1] +\
+        "' where " + str(providedinfo[2]) +" value(s) were provided. (line: " + str(providedinfo[3]) + ")"
+
     elif id == "0012":
         return "Expected " + str(providedinfo[0]) + " or " + str(providedinfo[1]) + " values for operator '" + \
-        str(providedinfo[2]) + "' where " + str(providedinfo[3]) + " value(s) were provided. (line: " + str(providedinfo[4]) + ")"
+        str(providedinfo[2]) + "' where " + str(providedinfo[3]) + " value(s) were provided. (line: " +\
+        str(providedinfo[4]) + ")"
+
     elif id == "0013":
         return "Syntax Error (line: " + str(providedinfo[0]) + ", col: " + str(providedinfo[1])+ ")\n" \
         "Additional Information : " + providedinfo[2]
+
     elif id == "0014":
         return "Unknown/undeclared identifier '" + str(providedinfo[0]) + "'. (line: " + str(providedinfo[1]) + ")\n" \
         "Example : print(lxk) -> unvalid because 'lxk' is not known or declared yet in the source-code."
+
     elif id == "0015":
         return "Invalid char literal " + str(providedinfo[0]) + ". (line: " + str(providedinfo[1]) + ")\n" \
         "Example : print('a') -> valid, print('abc') -> unvalid."
+
     elif id == "0016":
         return "Unknown type for '" + str(providedinfo[0]) + "' (line: " + str(providedinfo[1]) + ")."
+
     elif id == "0017":
-        return "Invalid identifier '" + str(providedinfo[0]) + "'. An identifier cannot start with a digit. (line: " + str(providedinfo[1])+ ")\n" \
+        return "Invalid identifier '" + str(providedinfo[0]) + "'. An identifier cannot \
+        start with a digit. (line: " + str(providedinfo[1])+ ")\n"
         "Example : print(tcx4) -> valid, print(4tcx) -> unvalid."
+
+    elif id == "0018":
+        return "Invalid operand '" + str(providedinfo[0]) + "' for operator '" + str(providedinfo[1]) + "'. (line: " + str(providedinfo[2])+ ")\n" \
+        "The first operand of the operator '" + str(providedinfo[1]) + "' must be an identifier."
 
 def pup_error(message):
     print("\n\t      An error occured\n--------------------------------------------\n")
