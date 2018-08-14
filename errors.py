@@ -75,6 +75,10 @@ def get_error(id, providedinfo = []):
         return "Invalid operand '" + str(providedinfo[0]) + "' for operator '" + str(providedinfo[1]) + "'. (line: " + str(providedinfo[2])+ ")\n" \
         "The first operand of the operator '" + str(providedinfo[1]) + "' must be an identifier."
 
+    elif id == "0019":
+        return "Invalid usage of operator '" + str(providedinfo[0]) + "'. (line: " + str(providedinfo[1]) + ")\n" \
+        "Example : print(foo += 5) -> unvalid, foo += 5 -> valid.\n\n" \
+        "Tip : If an operator made to modify a variable is used in a line, it must be the first operator used in the line."
 def pup_error(message):
     print("\n\t      An error occured\n--------------------------------------------\n")
     print(message)

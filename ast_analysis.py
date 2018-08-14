@@ -1,9 +1,9 @@
-import text_utilities
-import errors
+import text_utilities, errors
 
 # This module processes semantic and syntaxic analysis on the abstract syntax tree.
 
-declared_id = ["print", "if", "for", "while", "return", "else", "elif", "var1", "var2", "var3"]
+declared_id = ["print", "if", "for", "while", "return", "else", "elif", "end", "true", "false",\
+"var1", "var2", "var3"]
 
 op_list = [",", "||", "&&", ":¨", "==", "§§", "&=", "!=", "<=", ">=", "+=", "/=", "*=", "-=", "^=", "%=" ,"=", ">", \
 "<", "&", "+", "-", "%", "/", "*", "^", "@", "!"] # The Lazen operators list.
@@ -15,13 +15,15 @@ def go(ast, line_n): # This function will return True or False, True == everythi
                      # console ( Stop starting modules and just quit() if False)
 
     tab_amounts, tab_operators, op_lns = [], [], []
+
     op_elemc_lst = ["x|2", "x|2", "x|2", "1|", "x|2", "2|", "2|f_id", "x|2", "x|2", "x|2",\
     "2|f_id", "2|f_id", "2|f_id", "2|f_id", "2|f_id", "2|f_id", "2|", "x|2",\
     "x|2", "x|2", "x|2", "x|2", "x|2", "x|2", "x|2", "x|2", "1/2|", "1|"]  # f_id here means the first child must be an identifier
 
+    conct_op = ["+=", "-=", "/=", "*=", "^=", "%=", "&=", "="] # +=, -=, *=, &=, /=, ^=, %=, =, ...
     for counter, x in enumerate(ast.split("\n")):
         if x.replace("\t", "") in op_list:
-
+            #print("op: ", x.replace("\t", ""))
             tab_operators.append(x.replace("\t", ""))   # Here we append x (the operator) to the list 'tab_operators'.
             op_lns.append(counter)  # We append the line where x (the ope  rator) was encountered, in the same array as in tab_operators.
 
@@ -30,10 +32,16 @@ def go(ast, line_n): # This function will return True or False, True == everythi
 
     for counter, x in enumerate(tab_operators): # We're browsing into tab_operators.
         children, elemc_splt = get_children(x, ast, op_lns[counter], tab_amounts[counter]), op_elemc_lst[op_list.index(x)].split("|")
-        print("operator: ", x, " with line ", op_lns[counter] , "/ children amount: ", len(children))
 
-        # Below we're doing some basic AST analysis (also known as 'parsing', but it is just analysis there),
-        # directly below this comment we're doing analysis on the amount of children that each operator must have.
+        # Below we're doing some basic AST analysis (also known as 'parsing', but it is just analysis there).
+        # Here we're checking if each operator made to modify a variable is correctly used if it is in the line.
+
+        if len(ast.split("\n")) > 0:
+            for x2 in conct_op:
+                if x2 in tab_operators and not ast.split("\n")[0].strip() == x2: errors.pup_error(errors.get_error("0019", [x2, line_n]))
+
+
+        # Directly below this comment we're doing analysis on the amount of children that each operator must have.
 
         if elemc_splt[0] == "x":
             if elemc_splt[1] != "":
@@ -59,18 +67,15 @@ def go(ast, line_n): # This function will return True or False, True == everythi
             if not text_utilities.get_type(children[0]) == "id": errors.pup_error(errors.get_error(\
             "0018", [children[0], x, line_n]))
 
-        ###################################################################################################
-
 
     # Now we're going to analyze each element on the AST and check if it's a valid element.
-    # (example: does this identifier exists ?)
 
     for counter, x in enumerate(ast.split("\n")):
         getType = text_utilities.get_type(x.replace("\t", ""))
 
         if getType == "id":
             if not x.strip().lower() in declared_id: errors.pup_error(errors.get_error("0014", [x.strip(), line_n]))
-            pass # This is temporary, so i just have to delete the line above when i don't want the
+            pass # This is temporary, so I just have to delete the line above when I don't want the
                  # analyzer to check if each identifier exists.
 
         elif getType == "unk":
@@ -85,6 +90,11 @@ def go(ast, line_n): # This function will return True or False, True == everythi
             errors.pup_error(errors.get_error("0016", [x.strip(), line_n]))
 
     ###########################################################################################
+
+
+    for counter, x in enumerate(tab_operators):
+        children = get_children(x, ast, op_lns[counter], tab_amounts[counter])
+
 
     return True
 
