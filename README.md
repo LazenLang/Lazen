@@ -22,7 +22,7 @@ Yes, with some advanced knowledge you should have less syntaxic/compilation/inte
 Without needing any advanced programming knowledge ? Lazen is made for that.
 When you're programming with Lazen, you think about your software itself less than his source code.
 
-But Lazen has another goal : it aims to reduce the time it takes to write computer programs, without modifying the principles of the programming language methods.
+But Lazen has another goal : it aims to reduce the time it takes to write computer programs, without modifying the principles of the computer software writing methods.
 
 Start playing with Lazen and take some pleasure fastly !
 <br><br>
