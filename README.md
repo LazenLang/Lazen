@@ -13,7 +13,18 @@ But it's not always the case. Yes, it will be slower than some compiled programm
 
 <h2>Why ?</h2>
 <br>
-Way many programming languages were created in the past, and everyday, a new programming language is created. I've personally used many good programming languages in my programming life. Lazen is modest. It will not try to be "original" or to invent some completly new programming concepts and/or paradigms. It is made for being one of the simplest and "universal" programming language. It is made for programmers who want to code what they think, it is made for programmers who want to spend more time on thinking about the final render of their software/code than on trying to fix syntaxic bugs/trying to understand syntax and/or looking for help on forums. Yes, with some advanced knowledge you should have less syntaxic/compilation/interpretation errors. But why not having less errors right now ? Without needing any advanced programming knowledge ? Lazen is made for that. When you're programming with Lazen, you think about your software itself less than his source code.
+Way many programming languages were created in the past, and everyday, a new programming language is created. I've personally used many good programming languages in my programming life. Lazen is modest. It will not try to be "original" or to invent some completly new programming concepts and/or paradigms.
+
+It is made for being one of the simplest and "universal" programming language. It is made for programmers who want to code what they think, it is made for programmers who want to spend more time on thinking about the final render of their software/code than on trying to fix syntaxic bugs/trying to understand syntax and/or looking for help on forums.
+
+Yes, with some advanced knowledge you should have less syntaxic/compilation/interpretation errors. But why not having less errors right now ?
+
+Without needing any advanced programming knowledge ? Lazen is made for that.
+When you're programming with Lazen, you think about your software itself less than his source code.
+
+But Lazen has another goal : it aims to reduce the time it takes to write computer programs, without modifying the principles of the programming language methods.
+
+Start playing with Lazen and take some pleasure fastly !
 <br><br>
 
 Python, as an example, was the best programming language I have used before Lazen. Lazen is inspired by Python's and C#'s languages syntaxes. The syntax of many languages that inspired Lazen are pretty good, tiny, efficient, easy and fast to learn, read and understand.
