@@ -1,0 +1,6 @@
+@hello::
+lbl:last:ast{
+"Je suis un module !"
+}
+out:last
+rtrn:0

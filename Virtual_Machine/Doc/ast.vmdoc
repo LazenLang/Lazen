@@ -1,0 +1,29 @@
+L'AST se présenterait sous cette forme
+
+ast:<ast>:east
+Il peut être prolongé sur plusieurs lignes comme
+
+ast:
+"Hello World!\n":east
+. = opérateur
+1 = +
+2 = -
+3 = *
+4 = /
+/ = Séparateur
+ast:.1%5/5%.3%.2%5/2%%
+Traduction : (5+5)*(5-2)
+ast: .3%.1%5/5%/10%
+Traduction : (5+5)*10
+:east
+
+int:last:ast:+55:east
+
+out:last
+
+La sortie va être : 10
+
+lbl:last:ast:"Hello World !":east
+out:last
+
+La sortie va être : Hello World !

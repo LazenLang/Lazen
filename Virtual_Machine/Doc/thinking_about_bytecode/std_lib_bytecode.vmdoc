@@ -1,0 +1,40 @@
+
+
+La librarie standart serait une sorte de repère pour les compilateurs en Bytecode Lazen
+
+lbl:<var_case>:<value/ast>
+int:<var_case>:<value/ast>
+flt:<var_case>:<value/ast>
+bool:<var_case>:<value/ast>
+
+tableau :
+
+lbll:<var_case>:<value/ast>
+
+dict:
+
+lbld:<var_case>:<value/ast>
+
+Les I/O
+
+fle:open
+fle:read
+fle:gtlne:<line>
+fle:close
+
+
+Boucles:
+fonctions--> jump
+
+@main::
+int:last:call:loop
+rtrn:0
+
+@loop::
+lbl:last:ast{
+"Hi"
+}
+out:last
+jmp:this:3
+rtrn:0
+Boucle infinie qui dit Hi

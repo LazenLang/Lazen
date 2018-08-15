@@ -1,0 +1,10 @@
+@main::
+lbl:last:call:loop
+rtrn:0
+
+@loop::
+lbl:last:ast{
+"Hello World !"
+}
+out:last
+int:last:call:loop

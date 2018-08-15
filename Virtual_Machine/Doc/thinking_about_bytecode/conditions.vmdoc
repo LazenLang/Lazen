@@ -1,0 +1,17 @@
+Proposition:
+
+Les conditions sont représentés pasr un ast:
+
+if
+    ==
+        <var en numéro de case>
+        <var en numéro de case>
+    and
+        ==
+            <var en numéro de case>
+            <var en numéro de case>
+    or
+        ==
+            <var en numéro de case>
+            <var en numéro de case>
+permettant une interprétation plus simple à la vue des inombrables opérateurs intégrés en natif dans Lazen comme &=
