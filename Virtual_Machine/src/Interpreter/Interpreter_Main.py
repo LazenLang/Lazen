@@ -4,6 +4,8 @@ import utils.interpreter_utils as utils
 import utils.interpreter_consts as const
 import interpreter_funcs.funcs as funcs
 import time
+import sys
+import datetime
 class Interpreter:
     def __init__(self,file_content):
         self.line = {}
@@ -11,11 +13,12 @@ class Interpreter:
         #self.funcs = modules
         self.var_list = {"int": {}, "lbl": {}, "flt": {}, "bool": {}}
         functions, code = code_loader.get_code(self.file_content)
-        t0 = time.time()
+        t0 = time.perf_counter()
         func = self.execute_func("main", code)
         if func == "0":
-            t1 = time.time()
-            print("Code was successfully executed in {}".format(str(t1-t0)))
+            t1 = time.perf_counter()
+            final = t1-t0
+            print("Code was successfully executed in %.20f" % final)
     def execute_line(self,line, code, func):
         line = line.replace("\n","")
         line = utils.get_arguments(line)
@@ -28,7 +31,7 @@ class Interpreter:
                 self.var_list[line[0]][func][line[1]] = ast_code
                 self.line[func] = ast_lines + self.line[func]
         if line[0] in const.out_names:
-            print(self.var_list["lbl"][func][line[1]].replace('"',""))
+            sys.stdout.write(self.var_list["lbl"][func][line[1]].replace('"',"") + "\n")
         if line[0] in const.return_names:
             return line[1]
 
