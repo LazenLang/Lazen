@@ -1,4 +1,4 @@
-import info, text_utilities
+import info, text_utilities, time, start_modules
 
 def get_error(id, providedinfo = []):
     if id == "0001":
@@ -13,24 +13,24 @@ def get_error(id, providedinfo = []):
 
     elif id == "0004":
         return "Unclosed Char literal. Excepted (') after each ('). (line: " + str(providedinfo[0]) + ")\n" \
-        "Example : print('a') -> valid, print('a) -> unvalid."
+        "Example : print('a') -> valid, print('a) -> invalid."
 
     elif id == "0005":
         return "Unclosed String literal. Excepted (\") after each (\"). (line: " + str(providedinfo[0]) + ")\n" \
-        "Example : print(\"text\") -> valid, print(\"text) -> unvalid."
+        "Example : print(\"text\") -> valid, print(\"text) -> invalid."
 
     elif id == "0006":
         return "Unclosed Parenthesis. Expected ')' after each '('. (line: " + str(providedinfo[0]) + ")\n" \
-        "Example : x(a(5) * 5) -> valid, x(a(5 * 5) -> unvalid."
+        "Example : x(a(5) * 5) -> valid, x(a(5 * 5) -> invalid."
 
     elif id == "0007":
         return "Unnecessary closing parenthesis. Expected '(' before each ')'. (line: " + str(providedinfo[0]) + ")\n" \
-        "Example : x(a(5) * 5) -> valid, x(a(5) * 5)) -> unvalid."
+        "Example : x(a(5) * 5) -> valid, x(a(5) * 5)) -> invalid."
 
     elif id == "0008":
         return "Invalid character '" + str(providedinfo[0]) + "' (line: " +\
         str(providedinfo[1]) +", col: " + str(providedinfo[2]) + ")\n"
-        "Example : x(5 + 5) -> valid, x(" + providedinfo[0] + "5 + 5) -> unvalid."
+        "Example : x(5 + 5) -> valid, x(" + providedinfo[0] + "5 + 5) -> invalid."
 
     elif id == "0009":
         return "Incorrect symbol repetition (line: " + str(providedinfo[0]) + ", col: " + str(int(providedinfo[2]) + 3) + ").\n" \
@@ -40,7 +40,7 @@ def get_error(id, providedinfo = []):
     elif id == "0010":
         return "Expected " + str(providedinfo[0]) + " or more value(s) for operator '" + \
         str(providedinfo[1]) + "' where only \n" + str(providedinfo[2]) + " value(s) were provided. \
-        (line: " + str(providedinfo[3]) + ")\n" + "\nExample : x(5%4.25) -> valid, x(5%) -> unvalid."
+        (line: " + str(providedinfo[3]) + ")\n" + "\nExample : x(5%4.25) -> valid, x(5%) -> invalid."
 
     elif id == "0011":
         return "Expected " + str(providedinfo[0]) + " value(s) for operator '" + providedinfo[1] +\
@@ -57,32 +57,50 @@ def get_error(id, providedinfo = []):
 
     elif id == "0014":
         return "Unknown/undeclared identifier '" + str(providedinfo[0]) + "'. (line: " + str(providedinfo[1]) + ")\n" \
-        "Example : print(lxk) -> unvalid because 'lxk' is not known or declared yet in the source-code."
+        "Example : print(lxk) -> invalid because 'lxk' is not known or declared yet in the source-code."
 
     elif id == "0015":
         return "Invalid char literal " + str(providedinfo[0]) + ". (line: " + str(providedinfo[1]) + ")\n" \
-        "Example : print('a') -> valid, print('abc') -> unvalid."
+        "Example : print('a') -> valid, print('abc') -> invalid."
 
     elif id == "0016":
         return "Unknown type for '" + str(providedinfo[0]) + "' (line: " + str(providedinfo[1]) + ")."
 
     elif id == "0017":
-        return "Invalid identifier '" + str(providedinfo[0]) + "'. An identifier cannot \
-        start with a digit. (line: " + str(providedinfo[1])+ ")\n"
-        "Example : print(tcx4) -> valid, print(4tcx) -> unvalid."
+        return "Invalid identifier '" + str(providedinfo[0]) + "'. \
+An identifier cannot start with a digit. (line: " + str(providedinfo[1]) + ")\n"\
+        "Example : print(tcx4) -> valid, print(4tcx) -> invalid."
 
     elif id == "0018":
-        return "Invalid operand '" + str(providedinfo[0]) + "' for operator '" + str(providedinfo[1]) + "'. (line: " + str(providedinfo[2])+ ")\n" \
-        "The first operand of the operator '" + str(providedinfo[1]) + "' must be an identifier."
+        # This error message is temporarily removed.
+        pass
 
     elif id == "0019":
         return "Invalid usage of operator '" + str(providedinfo[0]) + "'. (line: " + str(providedinfo[1]) + ")\n" \
-        "Example : print(foo += 5) -> unvalid, foo += 5 -> valid.\n\n" \
+        "Example : print(foo " + str(providedinfo[0]) + " 5) -> invalid, foo " + str(providedinfo[0]) + " 5 -> valid.\n\n" \
         "Tip : If an operator made to modify a variable is used in a line, it must be the first operator used in the line."
+
+    elif id == "0020":
+        return "Invalid variable name '" + str(providedinfo[0]) + "'. (line: " + str(providedinfo[1]) + ")\n" \
+        "Additional Information : A variable name can't be a boolean identifier (true or false)."
+
+    elif id == "0021":
+        return "Operand '" + str(providedinfo[0]) + "' has an invalid type for operator '" + \
+        str(providedinfo[1]) + "'. (line: " + str(providedinfo[2]) + ")\n" \
+        "Additional Information : Excepted '" + str(providedinfo[3]) + "' type, got '" + str(providedinfo[4]) + "' type."
+
+    elif id == "0022":
+        return "Undefined function '" + str(providedinfo[0]) + "' (line: " + str(providedinfo[1]) + ").\n" \
+        "Example : print(\"some text\") -> valid, xarl(42) -> invalid because function 'xarl' is not defined as a function."
 def pup_error(message):
-    print("\n\t      An error occured\n--------------------------------------------\n")
+    t1 = time.clock()
+    print(info.bcolors.FAIL + "Compilation aborted after " +  str(t1 - start_modules.t0) + " seconds." + info.bcolors.ENDC)
+
+    print("\n\t      " + info.bcolors.WARNING + "An error occured" +\
+    info.bcolors.ENDC + "\n--------------------------------------------\n")
     print(message)
     print("\n--------------------------------------------\n")
+
     quit()
 
 def bsc_syntx_errs(token_list, line_n, invl_symb = False): # The provided token list should be an optimized token list

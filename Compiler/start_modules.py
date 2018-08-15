@@ -1,8 +1,10 @@
 import tokenizer, optimisations, errors, text_utilities, ast_build, ast_analysis, time, datetime, info
 
+t0 = 0.0
+
 def go(code):
 
-    print("Compiling " + str(len(code.split("\n"))-1) + " lines...\n")
+    print("Compiling " + str(len(code.split("\n"))-1) + " line(s)...\n")
 
     t0 = time.clock() # Time clock to compute the time that compilation took.
     verify_closings = errors.unclosed_symbols_verification(code)
@@ -37,6 +39,6 @@ def go(code):
         ##########################################################################
 
         t1 = time.clock()
-        print(info.bcolors.OKBLUE + "Compilation finished in " + str("%.4f" % (t1 - t0)) + " seconds.\n" + info.bcolors.ENDC)
+        print(info.bcolors.OKBLUE + "Compilation finished in " + str("%.6f" % (t1 - t0)) + " seconds.\n" + info.bcolors.ENDC)
 
         ##########################################################################

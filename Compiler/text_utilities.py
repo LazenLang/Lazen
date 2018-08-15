@@ -1,4 +1,4 @@
-import traceback, re, info
+import traceback, re, info, ast_analysis
 
 def list_to_str(list):
     result = ""
@@ -52,7 +52,16 @@ def repeat_char(char, times):
     return result
 
 def check_if_type(input, type = "str"): # This function will check if 'input' is a Lazen string, char, numeric or letter.
+
+    if type.endswith("/"):
+        if not check_if_type(input, "id"): return False
+        else: type = type[0:len(type)-1]
+
+    if type == "any": return True
     if input.strip() == "": return False
+
+    if input in ast_analysis.declared_id:
+        if ast_analysis.declared_id_types[ast_analysis.declared_id.index(input)] == type: return True
 
     if type == "str":
         if input.strip()[0] == "\"" and input.strip()[len(input.strip()) - 1] == "\""\
@@ -82,6 +91,28 @@ def check_if_type(input, type = "str"): # This function will check if 'input' is
 
     return False
 
+def check_type_okop(input, type = "str"):
+
+    if type.endswith("/"):
+        if not check_if_type(input, "id"): return False
+        else: type = type[0:len(type)-1]
+
+    if type == "any": return True
+    if input in ast_analysis.declared_id:
+        if ast_analysis.declared_id_types[ast_analysis.declared_id.index(input)] == type: return True
+
+    psymbs_types = ["comma_type", "bool", "bool", "bool", "bool", "bool", "vmod_type",\
+    "bool", "bool", "bool", "vmod_type", "vmod_type", "vmod_type", "vmod_type", "vmod_type", "vmod_type",\
+    "vmod_type", "bool", "bool", "str", "str/num", "str/num", "num", "num", "num", "num", "any", "num"]
+
+    # The position of each element is coordination with the parsing symbols list in info.
+
+    if not input in info.parsing_symbols:
+        return check_if_type(input, type)
+    else:
+        return type is psymbs_types[info.parsing_symbols.index(input)]
+
+
 def remspaces_bn(input): # This function will remove every space at the beginning and the end of 'input'
     beginning, end = 0, 0
     for x in input:
@@ -104,7 +135,7 @@ def bake_lit(input): # 'input' should be a token list, this function transforms 
     # to ->
     """
     print:
-    (
+    (get_type
     "a"
     )
     """
@@ -193,6 +224,9 @@ def reverse_str(str):
 
 def get_type(input): # 'input' should be a String,
                      # This function returns the type of the input by analysing it.
+
+    if check_if_type(input, "id") and input in ast_analysis.declared_id:
+        return ast_analysis.declared_id_types[ast_analysis.declared_id.index(input)]
 
     if check_if_type(input, "str"): return "str" # String literal
     elif check_if_type(input, "char"): return "char" # Character literal
